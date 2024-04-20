@@ -17,6 +17,7 @@ import ProductsTableActionsRow from "@/app/views/products-table/ProductsTableAct
 import { returnSame } from "@/app/utils";
 import ProductsService from "@/app/views/products-table/ProductsService";
 import ProductsTableFilters from "@/app/views/products-table/ProductsTableFilters";
+import { useProductCommissions } from "@/app/hooks/useProductCommissions";
 
 const TABLE_HEADINGS: NonEmptyArray<IndexTableHeading> = [
   { title: "Name" },
@@ -34,6 +35,7 @@ export default function ProductsTable() {
     handleSelectionChange,
     clearSelection,
   } = useIndexResourceState(returnSame<UnknownObject[]>(products));
+  const { updateProductCommissions } = useProductCommissions();
 
   const getProducts = useCallback(async () => {
     setFetchingProducts(true);
@@ -53,6 +55,17 @@ export default function ProductsTable() {
     getProducts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const productCommissions = products.reduce(
+      (acc, product) => ({
+        ...acc,
+        [product.id]: product.commissionPercent,
+      }),
+      {},
+    );
+    updateProductCommissions(productCommissions);
+  }, [products, updateProductCommissions]);
 
   const handleApplyCommissionToSelectedProducts = (percent: number | null) => {
     // TODO make sure when `all` is selected the commission is applied to everyone
