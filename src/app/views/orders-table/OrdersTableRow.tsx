@@ -7,7 +7,8 @@ const OrdersTableRow: React.FC<{
   index: number;
   isSelected: boolean;
 }> = ({ order, index, isSelected }) => {
-  const { id, day, quantity, sumCommission } = order;
+  const { id, day, sumCommission } = order;
+  const quantity = 0;
   return (
     <IndexTable.Row id={id} selected={isSelected} position={index}>
       <IndexTable.Cell>

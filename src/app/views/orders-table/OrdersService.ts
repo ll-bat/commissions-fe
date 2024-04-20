@@ -4,37 +4,57 @@ import { type Order } from "@/app/views/orders-table/types";
 const STATIC_ORDERS_DATA: Order[] = [
   {
     id: "#1",
-    productIds: ["#1"],
+    products: [
+      {
+        id: "#1",
+        price: 100,
+      },
+    ],
     staffMemberId: "#1",
-    quantity: 1,
     day: new Date(2022, 1, 15),
   },
   {
     id: "#2",
-    productIds: ["#2"],
+    products: [
+      {
+        id: "#2",
+        price: 200,
+      },
+    ],
     staffMemberId: "#1",
-    quantity: 1,
     day: new Date(2022, 1, 13),
   },
   {
     id: "#3",
-    productIds: ["#3"],
+    products: [
+      {
+        id: "#3",
+        price: 300,
+      },
+    ],
     staffMemberId: "#1",
-    quantity: 1,
     day: new Date(2022, 1, 13),
   },
   {
     id: "#4",
-    productIds: ["#2"],
+    products: [
+      {
+        id: "#1",
+        price: 400,
+      },
+    ],
     staffMemberId: "#2",
-    quantity: 2,
     day: new Date(2022, 1, 15),
   },
   {
     id: "#5",
-    productIds: ["#1"],
+    products: [
+      {
+        id: "#2",
+        price: 500,
+      },
+    ],
     staffMemberId: "#2",
-    quantity: 3,
     day: new Date(2022, 1, 16),
   },
 ];

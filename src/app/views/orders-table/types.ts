@@ -1,8 +1,12 @@
+export interface OrderProduct {
+  id: string;
+  price: number;
+}
+
 export interface Order {
   id: string;
-  productIds: string[];
+  products: OrderProduct[];
   staffMemberId: string;
-  quantity: number;
   day: Date;
 }
 
