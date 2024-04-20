@@ -5,3 +5,5 @@ export interface Product {
   price: number;
   commissionPercent: number | null;
 }
+
+export type ProductCommissionsType = Record<string, number | null>;
