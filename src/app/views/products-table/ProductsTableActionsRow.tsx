@@ -1,27 +1,27 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { type UnknownFunction } from "@/app/types/generalTypes";
-import { normalizePercent } from "@/app/utils";
 import { Button, Combobox, IndexTable, TextField } from "@shopify/polaris";
+import { type UnknownFunction } from "@/app/types/generalTypes";
+import { normalizePercent } from "@/app/views/products-table/utils";
 
 const ProductsTableActionsRow: React.FC<{
   hidden: boolean;
   onApplyClick: (percent: number) => unknown;
   onRemoveFromPlanClick: UnknownFunction;
 }> = ({ hidden, onApplyClick, onRemoveFromPlanClick }) => {
-  const [percent, setPercent] = useState("");
-  const handleTextFieldChange = useCallback((value: string) => {
+  const [percent, setPercent] = useState<number | null>(null);
+  const handlePercentChange = useCallback((value: string) => {
     setPercent(normalizePercent(value));
   }, []);
 
   useEffect(() => {
     if (hidden) {
       // TODO - maybe it's better to convert `visibility` to re-rendering ?
-      setPercent("");
+      setPercent(null);
     }
   }, [hidden]);
 
   const handleApplyClick = () => {
-    if (percent !== "") {
+    if (percent !== null) {
       onApplyClick(Number(percent));
     }
   };
@@ -38,8 +38,8 @@ const ProductsTableActionsRow: React.FC<{
               <TextField
                 label={null}
                 type="number"
-                value={percent}
-                onChange={handleTextFieldChange}
+                value={String(percent)}
+                onChange={handlePercentChange}
                 suffix="%"
                 autoComplete="off"
                 min={0}
