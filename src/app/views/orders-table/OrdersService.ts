@@ -1,5 +1,5 @@
 import { type Result } from "@/app/types/requestTypes";
-import { type Order } from "@/app/types/orderTypes";
+import { type Order } from "@/app/views/orders-table/types";
 
 const STATIC_ORDERS_DATA: Order[] = [
   {
@@ -39,7 +39,7 @@ const STATIC_ORDERS_DATA: Order[] = [
   },
 ];
 
-const OrderService = {
+const ordersService = {
   async getOrders(): Promise<Result<Order[]>> {
     return Promise.resolve({
       ok: true,
@@ -49,4 +49,4 @@ const OrderService = {
   },
 };
 
-export default OrderService;
+export default ordersService;

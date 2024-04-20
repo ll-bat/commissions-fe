@@ -1,5 +1,5 @@
 import React from "react";
-import { type OrderWithCommissionSum } from "@/app/types/orderTypes";
+import { type OrderWithCommissionSum } from "@/app/views/orders-table/types";
 import { Image, IndexTable } from "@shopify/polaris";
 
 const OrdersTableRow: React.FC<{

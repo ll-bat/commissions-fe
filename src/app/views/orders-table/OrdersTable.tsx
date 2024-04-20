@@ -6,14 +6,14 @@ import {
 } from "@shopify/polaris";
 import React, { useCallback, useEffect, useState } from "react";
 import OrdersTableFilters from "@/app/views/orders-table/OrdersTableFilters";
-import { type Order, type OrderWithCommissionSum } from "@/app/types/orderTypes";
+import { type Order, type OrderWithCommissionSum } from "@/app/views/orders-table/types";
 import { returnSame } from "@/app/utils";
 import { type UnknownObject } from "@/app/types/generalTypes";
 import { type NonEmptyArray } from "@shopify/polaris/build/ts/src/types";
 import { type IndexTableHeading } from "@shopify/polaris/build/ts/src/components/IndexTable";
 import { type Result } from "@/app/types/requestTypes";
 import OrdersTableRow from "@/app/views/orders-table/OrdersTableRow";
-import OrderService from "@/app/services/OrderService";
+import OrdersService from "@/app/views/orders-table/OrdersService";
 
 const TABLE_HEADINGS: NonEmptyArray<IndexTableHeading> = [
   { title: "Day" },
@@ -29,7 +29,7 @@ export default function OrdersTable() {
 
   const getOrders = useCallback(async () => {
     setFetchingOrders(true);
-    const { ok, result }: Result<Order[]> = await OrderService.getOrders();
+    const { ok, result }: Result<Order[]> = await OrdersService.getOrders();
     if (ok) {
       const items = result!;
       const ordersWithSumCommissions = items.map((order) => ({

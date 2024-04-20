@@ -1,5 +1,5 @@
 import { type Result } from "@/app/types/requestTypes";
-import { type Product } from "@/app/types/productTypes";
+import { type Product } from "@/app/views/products-table/types";
 
 const STATIC_PRODUCTS_DATA: Product[] = [
   {
@@ -18,7 +18,7 @@ const STATIC_PRODUCTS_DATA: Product[] = [
   },
 ];
 
-const ProductService = {
+const productsService = {
   async getProducts(): Promise<Result<Product[]>> {
     return Promise.resolve({
       ok: true,
@@ -28,4 +28,4 @@ const ProductService = {
   },
 };
 
-export default ProductService;
+export default productsService;
