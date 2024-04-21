@@ -13,3 +13,9 @@ export interface Order {
 export interface OrderWithCommissionSum extends Order {
   sumCommission: number;
 }
+
+export interface OrdersSummaryByDay {
+  day: Date;
+  ordersCount: number;
+  totalSumCommission: number;
+}

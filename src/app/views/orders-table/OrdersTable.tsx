@@ -8,6 +8,7 @@ import {
 import OrdersTableFilters from "@/app/views/orders-table/OrdersTableFilters";
 import {
   type Order,
+  OrdersSummaryByDay,
   type OrderWithCommissionSum,
 } from "@/app/views/orders-table/types";
 import { returnSame } from "@/app/utils";
@@ -18,7 +19,10 @@ import { type Result } from "@/app/types/requestTypes";
 import OrdersTableRow from "@/app/views/orders-table/OrdersTableRow";
 import OrdersService from "@/app/views/orders-table/OrdersService";
 import { useProductCommissions } from "@/app/hooks/useProductCommissions";
-import { calculateOrdersCommissions } from "@/app/views/orders-table/utils";
+import {
+  calculateOrdersCommissions,
+  getOrdersSummariesByDay,
+} from "@/app/views/orders-table/utils";
 
 const TABLE_HEADINGS: NonEmptyArray<IndexTableHeading> = [
   { title: "Day" },
@@ -29,6 +33,9 @@ const TABLE_HEADINGS: NonEmptyArray<IndexTableHeading> = [
 export default function OrdersTable() {
   const [fetchingOrders, setFetchingOrders] = useState<boolean>(false);
   const [orders, setOrders] = useState<OrderWithCommissionSum[]>([]);
+  const [ordersSummariesByDay, setOrdersSummariesByDay] = useState<
+    OrdersSummaryByDay[]
+  >([]);
   const { selectedResources, allResourcesSelected, handleSelectionChange } =
     useIndexResourceState(returnSame<UnknownObject[]>(orders));
   const { productCommissions } = useProductCommissions();
@@ -37,9 +44,9 @@ export default function OrdersTable() {
     setFetchingOrders(true);
     const { ok, result }: Result<Order[]> = await OrdersService.getOrders();
     if (ok) {
-      const items = result!;
+      const orders = result!;
       const ordersWithSumCommissions = calculateOrdersCommissions(
-        items,
+        orders,
         productCommissions,
       );
       setOrders(ordersWithSumCommissions);
@@ -61,6 +68,11 @@ export default function OrdersTable() {
       calculateOrdersCommissions(prev, productCommissions),
     );
   }, [setOrders, productCommissions]);
+
+  useEffect(() => {
+    const ordersSummariesByDay = getOrdersSummariesByDay(orders);
+    setOrdersSummariesByDay(ordersSummariesByDay);
+  }, [orders]);
 
   return (
     <Card padding="0">
