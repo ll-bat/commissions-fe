@@ -2,10 +2,11 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Button, Combobox, IndexTable, TextField } from "@shopify/polaris";
 import { type UnknownFunction } from "@/app/types/generalTypes";
 import { normalizePercent } from "@/app/views/products/utils";
+import EnterKeyListenerDiv from "@/app/components/EnterKeyListenerDiv";
 
 const ProductsTableActionsRow: React.FC<{
   hidden: boolean;
-  onApplyClick: (percent: number) => unknown;
+  onApplyClick: (percent: number | null) => unknown;
   onRemoveFromPlanClick: UnknownFunction;
 }> = ({ hidden, onApplyClick, onRemoveFromPlanClick }) => {
   const [percent, setPercent] = useState<number | null>(null);
@@ -21,9 +22,7 @@ const ProductsTableActionsRow: React.FC<{
   }, [hidden]);
 
   const handleApplyClick = () => {
-    if (percent !== null) {
-      onApplyClick(Number(percent));
-    }
+    onApplyClick(percent);
   };
 
   // TODO textField on enter to apply to selected products below
@@ -33,15 +32,17 @@ const ProductsTableActionsRow: React.FC<{
         <div
           style={{ display: "flex", visibility: hidden ? "hidden" : "visible" }}
         >
-          <TextField
-            label={null}
-            type="number"
-            value={String(percent)}
-            onChange={handlePercentChange}
-            suffix="%"
-            autoComplete="off"
-            min={0}
-          />
+          <EnterKeyListenerDiv onEnterClick={handleApplyClick}>
+            <TextField
+              label={null}
+              type="number"
+              value={String(percent)}
+              onChange={handlePercentChange}
+              suffix="%"
+              autoComplete="off"
+              min={0}
+            />
+          </EnterKeyListenerDiv>
           <div style={{ marginLeft: ".5rem", marginTop: ".15rem" }}>
             <Button onClick={handleApplyClick}>
               Apple to selected products

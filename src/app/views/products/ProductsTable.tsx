@@ -67,12 +67,15 @@ export default function ProductsTable() {
     updateProductCommissions(productCommissions);
   }, [products, updateProductCommissions]);
 
-  const handleApplyCommissionToSelectedProducts = (percent: number | null) => {
-    // TODO make sure when `all` is selected the commission is applied to everyone
+  const handleProductsCommissionPercentChange = (
+    percent: number | null,
+    productIds: Array<string>,
+    applyToAllProducts: boolean = false,
+  ) => {
     setProducts((prev: Product[]): Product[] =>
-      prev.map((product: Product): Product => {
+      prev.map((product): Product => {
         let newCommissionPercent = product.commissionPercent;
-        if (allResourcesSelected || selectedResources.includes(product.id)) {
+        if (applyToAllProducts || productIds.includes(product.id)) {
           newCommissionPercent = percent;
         }
         return {
@@ -85,7 +88,7 @@ export default function ProductsTable() {
   };
 
   const handleRemoveFromPlan = () => {
-    handleApplyCommissionToSelectedProducts(null);
+    handleProductsCommissionPercentChange(null, selectedResources);
     clearSelection();
   };
 
@@ -108,11 +111,20 @@ export default function ProductsTable() {
             product={product}
             index={index}
             isSelected={selectedResources.includes(product.id)}
+            onPercentChange={(percent) =>
+              handleProductsCommissionPercentChange(percent, [product.id])
+            }
           />
         ))}
         <ProductsTableActionsRow
           hidden={selectedResources.length === 0}
-          onApplyClick={handleApplyCommissionToSelectedProducts}
+          onApplyClick={(percent) =>
+            handleProductsCommissionPercentChange(
+              percent,
+              selectedResources,
+              allResourcesSelected,
+            )
+          }
           onRemoveFromPlanClick={handleRemoveFromPlan}
         />
       </IndexTable>
