@@ -2,7 +2,7 @@
 
 import { Page } from "@shopify/polaris";
 import ProductsTable from "@/app/views/products/ProductsTable";
-import OrdersTable from "@/app/views/orders/OrdersTable";
+import OrdersSummariesTable from "@/app/views/orders/OrdersSummariesTable";
 
 export default function Home() {
   // TODO - maybe to  use `Grid` ?
@@ -28,7 +28,7 @@ export default function Home() {
         }}
       >
         <div style={{ width: "100%", maxWidth: "800px" }}>
-          <OrdersTable />
+          <OrdersSummariesTable />
         </div>
       </div>
     </Page>

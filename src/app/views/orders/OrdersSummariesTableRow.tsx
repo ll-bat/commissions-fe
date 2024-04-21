@@ -2,7 +2,7 @@ import React from "react";
 import { type OrderWithCommissionSum } from "@/app/views/orders/types";
 import { Image, IndexTable } from "@shopify/polaris";
 
-const OrdersTableRow: React.FC<{
+const OrdersSummariesTableRow: React.FC<{
   order: OrderWithCommissionSum;
   index: number;
   isSelected: boolean;
@@ -32,4 +32,4 @@ const OrdersTableRow: React.FC<{
   );
 };
 
-export default OrdersTableRow;
+export default OrdersSummariesTableRow;

@@ -7,7 +7,7 @@ import {
 
 const SORT_OPTIONS: IndexFiltersProps["sortOptions"] = [];
 
-const OrdersTableFilters: React.FC = () => {
+const OrdersSummariesTableFilters: React.FC = () => {
   const [selected, setSelected] = useState<number>(0);
   const [sortSelected, setSortSelected] = useState<Array<string>>([
     "order asc",
@@ -42,4 +42,4 @@ const OrdersTableFilters: React.FC = () => {
   );
 };
 
-export default OrdersTableFilters;
+export default OrdersSummariesTableFilters;
