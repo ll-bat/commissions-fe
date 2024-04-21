@@ -1,5 +1,5 @@
 import { type Result } from "@/app/types/requestTypes";
-import { type Product } from "@/app/views/products-table/types";
+import { type Product } from "@/app/views/products/types";
 
 const STATIC_PRODUCTS_DATA: Product[] = [
   {

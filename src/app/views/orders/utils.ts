@@ -3,8 +3,8 @@ import {
   type Order,
   type OrderProduct,
   type OrderWithCommissionSum,
-} from "@/app/views/orders-table/types";
-import { type ProductCommissionsType } from "@/app/views/products-table/types";
+} from "@/app/views/orders/types";
+import { type ProductCommissionsType } from "@/app/views/products/types";
 
 /**
  * An order can have multiple products. Each product can have a commission percentage.

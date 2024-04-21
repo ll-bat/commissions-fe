@@ -1,5 +1,5 @@
 import { type Result } from "@/app/types/requestTypes";
-import { type Order } from "@/app/views/orders-table/types";
+import { type Order } from "@/app/views/orders/types";
 
 const STATIC_ORDERS_DATA: Order[] = [
   {

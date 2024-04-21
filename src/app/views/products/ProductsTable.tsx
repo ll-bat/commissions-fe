@@ -9,14 +9,14 @@ import {
 import React, { useState, useCallback, useEffect } from "react";
 import { type IndexTableHeading } from "@shopify/polaris/build/ts/src/components/IndexTable";
 import { type NonEmptyArray } from "@shopify/polaris/build/ts/src/types";
-import { type Product } from "@/app/views/products-table/types";
+import { type Product } from "@/app/views/products/types";
 import { type Result } from "@/app/types/requestTypes";
 import { type UnknownObject } from "@/app/types/generalTypes";
-import ProductsTableRow from "@/app/views/products-table/ProductsTableRow";
-import ProductsTableActionsRow from "@/app/views/products-table/ProductsTableActionsRow";
+import ProductsTableRow from "@/app/views/products/ProductsTableRow";
+import ProductsTableActionsRow from "@/app/views/products/ProductsTableActionsRow";
 import { returnSame } from "@/app/utils";
-import ProductsService from "@/app/views/products-table/ProductsService";
-import ProductsTableFilters from "@/app/views/products-table/ProductsTableFilters";
+import ProductsService from "@/app/views/products/ProductsService";
+import ProductsTableFilters from "@/app/views/products/ProductsTableFilters";
 import { useProductCommissions } from "@/app/hooks/useProductCommissions";
 
 const TABLE_HEADINGS: NonEmptyArray<IndexTableHeading> = [

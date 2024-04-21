@@ -1,8 +1,8 @@
 "use client";
 
 import { Page } from "@shopify/polaris";
-import ProductsTable from "@/app/views/products-table/ProductsTable";
-import OrdersTable from "@/app/views/orders-table/OrdersTable";
+import ProductsTable from "@/app/views/products/ProductsTable";
+import OrdersTable from "@/app/views/orders/OrdersTable";
 
 export default function Home() {
   // TODO - maybe to  use `Grid` ?

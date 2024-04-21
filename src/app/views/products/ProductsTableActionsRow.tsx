@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Button, Combobox, IndexTable, TextField } from "@shopify/polaris";
 import { type UnknownFunction } from "@/app/types/generalTypes";
-import { normalizePercent } from "@/app/views/products-table/utils";
+import { normalizePercent } from "@/app/views/products/utils";
 
 const ProductsTableActionsRow: React.FC<{
   hidden: boolean;

@@ -5,24 +5,24 @@ import {
   useBreakpoints,
   useIndexResourceState,
 } from "@shopify/polaris";
-import OrdersTableFilters from "@/app/views/orders-table/OrdersTableFilters";
+import OrdersTableFilters from "@/app/views/orders/OrdersTableFilters";
 import {
   type Order,
   OrdersSummaryByDay,
   type OrderWithCommissionSum,
-} from "@/app/views/orders-table/types";
+} from "@/app/views/orders/types";
 import { returnSame } from "@/app/utils";
 import { type UnknownObject } from "@/app/types/generalTypes";
 import { type NonEmptyArray } from "@shopify/polaris/build/ts/src/types";
 import { type IndexTableHeading } from "@shopify/polaris/build/ts/src/components/IndexTable";
 import { type Result } from "@/app/types/requestTypes";
-import OrdersTableRow from "@/app/views/orders-table/OrdersTableRow";
-import OrdersService from "@/app/views/orders-table/OrdersService";
+import OrdersTableRow from "@/app/views/orders/OrdersTableRow";
+import OrdersService from "@/app/views/orders/OrdersService";
 import { useProductCommissions } from "@/app/hooks/useProductCommissions";
 import {
   calculateOrdersCommissions,
   getOrdersSummariesByDay,
-} from "@/app/views/orders-table/utils";
+} from "@/app/views/orders/utils";
 
 const TABLE_HEADINGS: NonEmptyArray<IndexTableHeading> = [
   { title: "Day" },

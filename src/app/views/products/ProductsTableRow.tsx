@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { type Product } from "@/app/views/products-table/types";
+import { type Product } from "@/app/views/products/types";
 import { normalizePercent } from "@/app/utils";
 import { Combobox, Image, IndexTable, TextField } from "@shopify/polaris";
 
