@@ -32,12 +32,14 @@ const TABLE_HEADINGS: NonEmptyArray<IndexTableHeading> = [
 
 export default function OrdersTable() {
   const [fetchingOrders, setFetchingOrders] = useState<boolean>(false);
-  const [orders, setOrders] = useState<OrderWithCommissionSum[]>([]);
+  const [ordersWithCommissions, setOrdersWithCommissions] = useState<
+    OrderWithCommissionSum[]
+  >([]);
   const [ordersSummariesByDay, setOrdersSummariesByDay] = useState<
     OrdersSummaryByDay[]
   >([]);
   const { selectedResources, allResourcesSelected, handleSelectionChange } =
-    useIndexResourceState(returnSame<UnknownObject[]>(orders));
+    useIndexResourceState(returnSame<UnknownObject[]>(ordersWithCommissions));
   const { productCommissions } = useProductCommissions();
 
   const getOrders = useCallback(async () => {
@@ -49,7 +51,7 @@ export default function OrdersTable() {
         orders,
         productCommissions,
       );
-      setOrders(ordersWithSumCommissions);
+      setOrdersWithCommissions(ordersWithSumCommissions);
     } else {
       // TODO - show error
     }
@@ -64,15 +66,16 @@ export default function OrdersTable() {
   }, []);
 
   useEffect(() => {
-    setOrders((prev: OrderWithCommissionSum[]): OrderWithCommissionSum[] =>
-      calculateOrdersCommissions(prev, productCommissions),
+    setOrdersWithCommissions(
+      (prev: OrderWithCommissionSum[]): OrderWithCommissionSum[] =>
+        calculateOrdersCommissions(prev, productCommissions),
     );
-  }, [setOrders, productCommissions]);
+  }, [setOrdersWithCommissions, productCommissions]);
 
   useEffect(() => {
-    const ordersSummariesByDay = getOrdersSummariesByDay(orders);
+    const ordersSummariesByDay = getOrdersSummariesByDay(ordersWithCommissions);
     setOrdersSummariesByDay(ordersSummariesByDay);
-  }, [orders]);
+  }, [ordersWithCommissions]);
 
   return (
     <Card padding="0">
@@ -81,7 +84,7 @@ export default function OrdersTable() {
       <IndexTable
         selectable={false}
         condensed={useBreakpoints().smDown}
-        itemCount={orders.length}
+        itemCount={ordersWithCommissions.length}
         selectedItemsCount={
           allResourcesSelected ? "All" : selectedResources.length
         }
@@ -89,7 +92,7 @@ export default function OrdersTable() {
         headings={TABLE_HEADINGS}
         loading={fetchingOrders}
       >
-        {orders.map((order, index) => (
+        {ordersWithCommissions.map((order, index) => (
           <OrdersTableRow
             key={order.id}
             order={order}
