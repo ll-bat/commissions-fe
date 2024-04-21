@@ -1,16 +1,17 @@
-import React from "react";
-import { type OrderWithCommissionSum } from "@/app/views/orders/types";
+import { type FC } from "react";
+import { type OrdersSummaryByDay } from "@/app/views/orders/types";
 import { Image, IndexTable } from "@shopify/polaris";
 
-const OrdersSummariesTableRow: React.FC<{
-  order: OrderWithCommissionSum;
+const OrdersSummariesTableRow: FC<{
+  ordersSummary: OrdersSummaryByDay;
   index: number;
-  isSelected: boolean;
-}> = ({ order, index, isSelected }) => {
-  const { id, day, sumCommission } = order;
-  const quantity = 0;
+}> = ({ ordersSummary, index }) => {
+  const { day, ordersCount, totalSumCommission } = ordersSummary;
   return (
-    <IndexTable.Row id={id} selected={isSelected} position={index}>
+    <IndexTable.Row
+      id={`${ordersSummary.day.toLocaleDateString()}-${index}`}
+      position={index}
+    >
       <IndexTable.Cell>
         <div style={{ display: "flex" }}>
           <Image alt="man" source="images/man.png" width="40" />
@@ -26,8 +27,8 @@ const OrdersSummariesTableRow: React.FC<{
           </p>
         </div>
       </IndexTable.Cell>
-      <IndexTable.Cell>{quantity}</IndexTable.Cell>
-      <IndexTable.Cell>${sumCommission}</IndexTable.Cell>
+      <IndexTable.Cell>{ordersCount}</IndexTable.Cell>
+      <IndexTable.Cell>${totalSumCommission}</IndexTable.Cell>
     </IndexTable.Row>
   );
 };

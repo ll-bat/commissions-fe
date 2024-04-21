@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   IndexTable,
@@ -7,9 +7,10 @@ import {
 } from "@shopify/polaris";
 import OrdersSummariesTableFilters from "@/app/views/orders/OrdersSummariesTableFilters";
 import {
-  OrdersSummaryByDay,
+  type OrdersSummaryByDay,
   type OrderWithCommissionSum,
 } from "@/app/views/orders/types";
+
 import { returnSame } from "@/app/utils";
 import { type UnknownObject } from "@/app/types/generalTypes";
 import { type NonEmptyArray } from "@shopify/polaris/build/ts/src/types";
@@ -88,12 +89,11 @@ export default function OrdersSummariesTable() {
         headings={TABLE_HEADINGS}
         loading={fetchingOrders}
       >
-        {ordersWithCommissions.map((order, index) => (
+        {ordersSummariesByDay.map((ordersSummary, index) => (
           <OrdersSummariesTableRow
-            key={order.id}
-            order={order}
+            key={`${ordersSummary.day.toLocaleDateString()}-${index}`}
+            ordersSummary={ordersSummary}
             index={index}
-            isSelected={selectedResources.includes(order.id)}
           />
         ))}
       </IndexTable>
