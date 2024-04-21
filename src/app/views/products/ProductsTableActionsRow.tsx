@@ -33,18 +33,14 @@ const ProductsTableActionsRow: React.FC<{
         <div
           style={{ display: "flex", visibility: hidden ? "hidden" : "visible" }}
         >
-          <Combobox
-            activator={
-              <TextField
-                label={null}
-                type="number"
-                value={String(percent)}
-                onChange={handlePercentChange}
-                suffix="%"
-                autoComplete="off"
-                min={0}
-              />
-            }
+          <TextField
+            label={null}
+            type="number"
+            value={String(percent)}
+            onChange={handlePercentChange}
+            suffix="%"
+            autoComplete="off"
+            min={0}
           />
           <div style={{ marginLeft: ".5rem", marginTop: ".15rem" }}>
             <Button onClick={handleApplyClick}>

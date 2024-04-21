@@ -1,23 +1,23 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { type Product } from "@/app/views/products/types";
-import { normalizePercent } from "@/app/utils";
-import { Combobox, Image, IndexTable, TextField } from "@shopify/polaris";
+import { Image, IndexTable, TextField } from "@shopify/polaris";
+import { normalizePercent } from "@/app/views/products/utils";
 
 const ProductsTableRow: React.FC<{
   product: Product;
   index: number;
   isSelected: boolean;
 }> = ({ product, index, isSelected }) => {
-  const [percent, setPercent] = useState("");
-  const handleTextFieldChange = useCallback((value: string) => {
+  const [percent, setPercent] = useState<number | null>(null);
+  const handlePercentChange = useCallback((value: string) => {
     setPercent(normalizePercent(value));
   }, []);
 
   useEffect(() => {
-    setPercent(String(product.commissionPercent));
+    setPercent(product.commissionPercent);
   }, [product.commissionPercent]);
 
-  const { id, name, category, price, commissionPercent } = product;
+  const { id, name, category, price } = product;
   return (
     <IndexTable.Row id={id} selected={isSelected} position={index}>
       <IndexTable.Cell>
@@ -39,19 +39,15 @@ const ProductsTableRow: React.FC<{
       <IndexTable.Cell>${price}</IndexTable.Cell>
       <IndexTable.Cell>
         <div onClick={(e) => e.stopPropagation()}>
-          <Combobox
-            activator={
-              <TextField
-                label={null}
-                type="number"
-                value={percent}
-                onChange={handleTextFieldChange}
-                suffix="%"
-                autoComplete="off"
-                min={0}
-              />
-            }
-          ></Combobox>
+          <TextField
+            label={null}
+            type="number"
+            value={String(percent)}
+            onChange={handlePercentChange}
+            suffix="%"
+            autoComplete="off"
+            min={0}
+          />
         </div>
       </IndexTable.Cell>
     </IndexTable.Row>
