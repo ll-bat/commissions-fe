@@ -13,11 +13,12 @@ import { type Product } from "@/app/views/products/types";
 import { type Result } from "@/app/types/requestTypes";
 import { type UnknownObject } from "@/app/types/generalTypes";
 import ProductsTableRow from "@/app/views/products/ProductsTableRow";
-import ProductsTableActionsRow from "@/app/views/products/ProductsTableActionsRow";
 import { returnSame } from "@/app/utils";
 import ProductsService from "@/app/views/products/ProductsService";
 import ProductsTableFilters from "@/app/views/products/ProductsTableFilters";
 import { useProductCommissions } from "@/app/hooks/useProductCommissions";
+import type { BulkActionsProps } from "@shopify/polaris/build/ts/src/components/BulkActions";
+import ProductsTableFooter from "@/app/views/products/ProductsTableActionsRow";
 
 const TABLE_HEADINGS: NonEmptyArray<IndexTableHeading> = [
   { title: "Name" },
@@ -116,18 +117,18 @@ export default function ProductsTable() {
             }
           />
         ))}
-        <ProductsTableActionsRow
-          hidden={selectedResources.length === 0}
-          onApplyClick={(percent) =>
-            handleProductsCommissionPercentChange(
-              percent,
-              selectedResources,
-              allResourcesSelected,
-            )
-          }
-          onRemoveFromPlanClick={handleRemoveFromPlan}
-        />
       </IndexTable>
+      <ProductsTableFooter
+        hidden={selectedResources.length === 0}
+        onApplyClick={(percent) =>
+          handleProductsCommissionPercentChange(
+            percent,
+            selectedResources,
+            allResourcesSelected,
+          )
+        }
+        onRemoveFromPlanClick={handleRemoveFromPlan}
+      />
     </Card>
   );
 }

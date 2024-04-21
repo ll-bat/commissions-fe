@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Button, Combobox, IndexTable, TextField } from "@shopify/polaris";
+import { Button, IndexTable, TextField } from "@shopify/polaris";
 import { type UnknownFunction } from "@/app/types/generalTypes";
 import { normalizePercent } from "@/app/views/products/utils";
 import EnterKeyListenerDiv from "@/app/components/EnterKeyListenerDiv";
 
-const ProductsTableActionsRow: React.FC<{
+const ProductsTableFooter: React.FC<{
   hidden: boolean;
   onApplyClick: (percent: number | null) => unknown;
   onRemoveFromPlanClick: UnknownFunction;
@@ -27,37 +27,31 @@ const ProductsTableActionsRow: React.FC<{
 
   // TODO textField on enter to apply to selected products below
   return (
-    <IndexTable.Row id="1" position={0} rowType="subheader">
-      <IndexTable.Cell colSpan={4}>
-        <div
-          style={{ display: "flex", visibility: hidden ? "hidden" : "visible" }}
-        >
-          <EnterKeyListenerDiv onEnterClick={handleApplyClick}>
-            <TextField
-              label={null}
-              type="number"
-              value={String(percent)}
-              onChange={handlePercentChange}
-              suffix="%"
-              autoComplete="off"
-              min={0}
-            />
-          </EnterKeyListenerDiv>
-          <div style={{ marginLeft: ".5rem", marginTop: ".15rem" }}>
-            <Button onClick={handleApplyClick}>
-              Apple to selected products
-            </Button>
-          </div>
-          <div style={{ marginLeft: ".5rem", marginTop: ".15rem" }}>
-            <Button onClick={onRemoveFromPlanClick}>Remove from plan</Button>
-          </div>
-          <div style={{ marginLeft: ".5rem", marginTop: ".15rem" }}>
-            <Button>Cancel</Button>
-          </div>
+    <div style={{ padding: ".5rem 3rem", borderTop: "1px solid lightgrey" }}>
+      <div style={{ display: "flex", visibility: hidden ? 'hidden' : 'visible' }}>
+        <EnterKeyListenerDiv onEnterClick={handleApplyClick}>
+          <TextField
+            label={null}
+            type="number"
+            value={String(percent)}
+            onChange={handlePercentChange}
+            suffix="%"
+            autoComplete="off"
+            min={0}
+          />
+        </EnterKeyListenerDiv>
+        <div style={{ marginLeft: ".5rem", marginTop: ".15rem" }}>
+          <Button onClick={handleApplyClick}>Apple to selected products</Button>
         </div>
-      </IndexTable.Cell>
-    </IndexTable.Row>
+        <div style={{ marginLeft: ".5rem", marginTop: ".15rem" }}>
+          <Button onClick={onRemoveFromPlanClick}>Remove from plan</Button>
+        </div>
+        <div style={{ marginLeft: ".5rem", marginTop: ".15rem" }}>
+          <Button>Cancel</Button>
+        </div>
+      </div>
+    </div>
   );
 };
 
-export default ProductsTableActionsRow;
+export default ProductsTableFooter;
