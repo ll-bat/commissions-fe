@@ -70,8 +70,12 @@ export default function OrdersSummariesTable() {
   }, [setOrdersWithCommissions, productCommissions]);
 
   useEffect(() => {
+    // TODO - we might improve this ?
     const ordersSummariesByDay = getOrdersSummariesByDay(ordersWithCommissions);
-    setOrdersSummariesByDay(ordersSummariesByDay);
+    const sortedOrdersSummariesByDay = ordersSummariesByDay.sort(
+      (a, b) => a.date.getTime() - b.date.getTime(),
+    );
+    setOrdersSummariesByDay(sortedOrdersSummariesByDay);
   }, [ordersWithCommissions]);
 
   return (
