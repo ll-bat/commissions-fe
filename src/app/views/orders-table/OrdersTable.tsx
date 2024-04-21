@@ -42,26 +42,23 @@ export default function OrdersTable() {
     useIndexResourceState(returnSame<UnknownObject[]>(ordersWithCommissions));
   const { productCommissions } = useProductCommissions();
 
-  const getOrders = useCallback(async () => {
-    setFetchingOrders(true);
-    const { ok, result }: Result<Order[]> = await OrdersService.getOrders();
-    if (ok) {
-      const orders = result!;
-      const ordersWithSumCommissions = calculateOrdersCommissions(
-        orders,
-        productCommissions,
-      );
-      setOrdersWithCommissions(ordersWithSumCommissions);
-    } else {
-      // TODO - show error
-    }
-    setFetchingOrders(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    getOrders();
+    async function fetchData() {
+      setFetchingOrders(true);
+      const { ok, result: orders } = await OrdersService.getOrders();
+      setFetchingOrders(false);
+      if (ok) {
+        const ordersWithSumCommissions = calculateOrdersCommissions(
+          orders!,
+          productCommissions,
+        );
+        setOrdersWithCommissions(ordersWithSumCommissions);
+      } else {
+        // Handle error
+      }
+    }
+
+    fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
