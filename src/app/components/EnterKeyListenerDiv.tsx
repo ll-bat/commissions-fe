@@ -1,11 +1,10 @@
-import React, { KeyboardEvent } from "react";
+import { FC, HTMLAttributes, KeyboardEvent } from "react";
 
-interface EnterKeyListenerDivProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+interface EnterKeyListenerDivProps extends HTMLAttributes<HTMLDivElement> {
   onEnterClick: (event: KeyboardEvent<HTMLDivElement>) => void;
 }
 
-const EnterKeyListenerDiv: React.FC<EnterKeyListenerDivProps> = ({
+const EnterKeyListenerDiv: FC<EnterKeyListenerDivProps> = ({
   onEnterClick,
   ...props
 }) => {
