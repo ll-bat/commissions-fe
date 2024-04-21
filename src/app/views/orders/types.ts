@@ -7,7 +7,7 @@ export interface Order {
   id: string;
   products: OrderProduct[];
   staffMemberId: string;
-  day: Date;
+  date: Date;
 }
 
 export interface OrderWithCommissionSum extends Order {
@@ -15,7 +15,7 @@ export interface OrderWithCommissionSum extends Order {
 }
 
 export interface OrdersSummaryByDay {
-  day: Date;
+  date: Date;
   ordersCount: number;
   totalSumCommission: number;
 }

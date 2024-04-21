@@ -6,10 +6,10 @@ const OrdersSummariesTableRow: FC<{
   ordersSummary: OrdersSummaryByDay;
   index: number;
 }> = ({ ordersSummary, index }) => {
-  const { day, ordersCount, totalSumCommission } = ordersSummary;
+  const { date, ordersCount, totalSumCommission } = ordersSummary;
   return (
     <IndexTable.Row
-      id={`${ordersSummary.day.toLocaleDateString()}-${index}`}
+      id={`${ordersSummary.date.toLocaleDateString()}-${index}`}
       position={index}
     >
       <IndexTable.Cell>
@@ -23,7 +23,7 @@ const OrdersSummariesTableRow: FC<{
               fontWeight: "normal",
             }}
           >
-            {day.toDateString()}
+            {date.toDateString()}
           </p>
         </div>
       </IndexTable.Cell>

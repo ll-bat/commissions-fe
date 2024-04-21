@@ -39,11 +39,11 @@ export function getOrdersSummariesByDay(
 
   const ordersSummaryByDayMap: OrdersSummaryByDayMap = orders.reduce(
     (acc: OrdersSummaryByDayMap, order: OrderWithCommissionSum) => {
-      const dateKey = order.day.toISOString().split("T")[0];
+      const dateKey = order.date.toISOString().split("T")[0];
 
       if (!acc[dateKey]) {
         acc[dateKey] = {
-          day: order.day,
+          date: order.date,
           ordersCount: 0,
           totalSumCommission: 0,
         };

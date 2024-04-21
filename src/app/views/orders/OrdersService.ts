@@ -11,7 +11,7 @@ const STATIC_ORDERS_DATA: Order[] = [
       },
     ],
     staffMemberId: "#1",
-    day: new Date(2022, 1, 15),
+    date: new Date(2022, 1, 15),
   },
   {
     id: "#2",
@@ -22,7 +22,7 @@ const STATIC_ORDERS_DATA: Order[] = [
       },
     ],
     staffMemberId: "#1",
-    day: new Date(2022, 1, 13),
+    date: new Date(2022, 1, 13),
   },
   {
     id: "#3",
@@ -33,7 +33,7 @@ const STATIC_ORDERS_DATA: Order[] = [
       },
     ],
     staffMemberId: "#1",
-    day: new Date(2022, 1, 13),
+    date: new Date(2022, 1, 13),
   },
   {
     id: "#4",
@@ -44,7 +44,7 @@ const STATIC_ORDERS_DATA: Order[] = [
       },
     ],
     staffMemberId: "#2",
-    day: new Date(2022, 1, 15),
+    date: new Date(2022, 1, 15),
   },
   {
     id: "#5",
@@ -55,7 +55,7 @@ const STATIC_ORDERS_DATA: Order[] = [
       },
     ],
     staffMemberId: "#2",
-    day: new Date(2022, 1, 16),
+    date: new Date(2022, 1, 16),
   },
 ];
 

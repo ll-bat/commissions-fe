@@ -91,7 +91,7 @@ export default function OrdersSummariesTable() {
       >
         {ordersSummariesByDay.map((ordersSummary, index) => (
           <OrdersSummariesTableRow
-            key={`${ordersSummary.day.toLocaleDateString()}-${index}`}
+            key={`${ordersSummary.date.toLocaleDateString()}-${index}`}
             ordersSummary={ordersSummary}
             index={index}
           />
