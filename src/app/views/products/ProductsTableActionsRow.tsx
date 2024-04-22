@@ -25,7 +25,6 @@ const ProductsTableFooter: React.FC<{
     onApplyClick(percent);
   };
 
-  // TODO textField on enter to apply to selected products below
   return (
     <div style={{ padding: ".5rem 3rem", borderTop: "1px solid lightgrey" }}>
       <div style={{ display: "flex", visibility: hidden ? 'hidden' : 'visible' }}>
