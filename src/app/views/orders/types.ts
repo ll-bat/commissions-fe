@@ -6,7 +6,7 @@ export interface OrderProduct {
 export interface Order {
   id: string;
   products: OrderProduct[];
-  staffMemberId: string;
+  staffMember: StaffMember;
   date: Date;
 }
 

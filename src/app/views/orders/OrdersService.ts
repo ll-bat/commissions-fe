@@ -1,6 +1,17 @@
 import { type Result } from "@/app/types/requestTypes";
 import { DateRange, type Order, StaffMember } from "@/app/views/orders/types";
 
+const STATIC_STAFF_MEMBERS: StaffMember[] = [
+  {
+    id: "#st-1",
+    fullName: "John Doe",
+  },
+  {
+    id: "#st-21",
+    fullName: "GG LL",
+  },
+];
+
 const STATIC_ORDERS_DATA: Order[] = [
   {
     id: "#1",
@@ -10,7 +21,7 @@ const STATIC_ORDERS_DATA: Order[] = [
         price: 100,
       },
     ],
-    staffMemberId: "#1",
+    staffMember: STATIC_STAFF_MEMBERS[0],
     date: new Date(2022, 1, 15),
   },
   {
@@ -21,7 +32,7 @@ const STATIC_ORDERS_DATA: Order[] = [
         price: 200,
       },
     ],
-    staffMemberId: "#1",
+    staffMember: STATIC_STAFF_MEMBERS[1],
     date: new Date(2022, 1, 13),
   },
   {
@@ -32,7 +43,7 @@ const STATIC_ORDERS_DATA: Order[] = [
         price: 300,
       },
     ],
-    staffMemberId: "#1",
+    staffMember: STATIC_STAFF_MEMBERS[0],
     date: new Date(2022, 1, 13),
   },
   {
@@ -43,7 +54,7 @@ const STATIC_ORDERS_DATA: Order[] = [
         price: 400,
       },
     ],
-    staffMemberId: "#2",
+    staffMember: STATIC_STAFF_MEMBERS[1],
     date: new Date(2022, 1, 15),
   },
   {
@@ -54,19 +65,8 @@ const STATIC_ORDERS_DATA: Order[] = [
         price: 500,
       },
     ],
-    staffMemberId: "#2",
+    staffMember: STATIC_STAFF_MEMBERS[0],
     date: new Date(2022, 1, 16),
-  },
-];
-
-const STATIC_STAFF_MEMBERS: StaffMember[] = [
-  {
-    id: "#st-1",
-    fullName: "John Doe",
-  },
-  {
-    id: "#st-21",
-    fullName: "GG LL",
   },
 ];
 
