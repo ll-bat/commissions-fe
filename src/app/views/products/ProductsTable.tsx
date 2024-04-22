@@ -9,7 +9,11 @@ import {
 import React, { useState, useCallback, useEffect } from "react";
 import { type IndexTableHeading } from "@shopify/polaris/build/ts/src/components/IndexTable";
 import { type NonEmptyArray } from "@shopify/polaris/build/ts/src/types";
-import { type Product, type ProductCategory } from "@/app/views/products/types";
+import {
+  type Product,
+  type ProductCategory,
+  type SortFunction,
+} from "@/app/views/products/types";
 import { type Result } from "@/app/types/requestTypes";
 import { type UnknownObject } from "@/app/types/generalTypes";
 import ProductsTableRow from "@/app/views/products/ProductsTableRow";
@@ -30,6 +34,17 @@ const TABLE_HEADINGS: NonEmptyArray<IndexTableHeading> = [
   { title: "Price" },
   { title: "Commission Percent" },
 ];
+
+const SORT_OPTIONS: Record<string, SortFunction<Product>> = {
+  Name: (a, b) => a.name.localeCompare(b.name),
+  Category: (a, b) => {
+    return a.category.name.localeCompare(b.category.name);
+  },
+  Price: (a, b) => a.price - b.price,
+  "Commission Percent": (a, b) => {
+    return (a.commissionPercent ?? 0) - (b.commissionPercent ?? 0);
+  },
+};
 
 export default function ProductsTable() {
   const [fetchingProducts, setFetchingProducts] = useState<boolean>(true);
@@ -124,18 +139,27 @@ export default function ProductsTable() {
     productIds: Array<string>,
     applyToAllProducts = false,
   ) => {
-    setProducts((prev: Product[]): Product[] =>
+    const toUpdateProductIds = applyToAllProducts
+      ? filteredProducts.map((product) => product.id)
+      : productIds;
+    const toUpdateProductIdsMapper: Record<string, true> = {};
+    for (const id of toUpdateProductIds) {
+      toUpdateProductIdsMapper[id] = true;
+    }
+
+    const updateProductsFn = (prev: Product[]) =>
       prev.map((product): Product => {
         let newCommissionPercent = product.commissionPercent;
-        if (applyToAllProducts || productIds.includes(product.id)) {
+        if (toUpdateProductIdsMapper[product.id]) {
           newCommissionPercent = percent;
         }
         return {
           ...product,
           commissionPercent: newCommissionPercent,
         };
-      }),
-    );
+      });
+    setProducts(updateProductsFn);
+    setFilteredProducts(updateProductsFn);
     clearSelection();
   };
 
@@ -162,6 +186,17 @@ export default function ProductsTable() {
     setFilter((prev) => ({ ...prev, categoryId: null, productName: null }));
   }, []);
 
+  const handleSortChange = useCallback(
+    (sortKey: keyof typeof SORT_OPTIONS, isAscending: boolean) => {
+      const sortedProducts = [...filteredProducts].sort((a, b) => {
+        const sortFn = SORT_OPTIONS[sortKey];
+        return isAscending ? sortFn(a, b) : sortFn(b, a);
+      });
+      setFilteredProducts(sortedProducts);
+    },
+    [filteredProducts, setFilteredProducts],
+  );
+
   return (
     <Card padding="0">
       <ProductsTableFilters
@@ -169,6 +204,8 @@ export default function ProductsTable() {
         onCategoryChange={handleCategoryFilterChange}
         onQueryChange={handleFilterProductNameChange}
         onFilterClear={handleFilterClear}
+        sortKeyOptions={Object.keys(SORT_OPTIONS)}
+        onSortChange={handleSortChange}
       />
       <IndexTable
         condensed={useBreakpoints().smDown}

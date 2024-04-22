@@ -12,3 +12,5 @@ export interface ProductCategory {
   id: string;
   name: string;
 }
+
+export type SortFunction<T> = (a: T, b: T) => number;

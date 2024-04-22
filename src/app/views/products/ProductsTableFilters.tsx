@@ -8,10 +8,6 @@ import {
 import { type ProductCategory } from "@/app/views/products/types";
 import useDelayedExecution from "@/app/hooks/useDelayedExecution";
 
-const SORT_OPTIONS: IndexFiltersProps["sortOptions"] = [
-  { label: "Product", value: "product asc", directionLabel: "Ascending" },
-];
-
 const CATEGORY_FILTER_KEY = "category";
 
 const ProductsTableFilters: React.FC<{
@@ -19,14 +15,23 @@ const ProductsTableFilters: React.FC<{
   onCategoryChange: (categoryId: string) => void;
   onQueryChange: (query: string) => void;
   onFilterClear: () => void;
-}> = ({ categories, onCategoryChange, onQueryChange, onFilterClear }) => {
+  sortKeyOptions: string[];
+  onSortChange: (sortKey: string, isAscending: boolean) => void;
+}> = ({
+  categories,
+  onCategoryChange,
+  onQueryChange,
+  onFilterClear,
+  sortKeyOptions,
+  onSortChange,
+}) => {
   const [selected, setSelected] = useState<number>(0);
   const [queryValue, setQueryValue] = useState<string>("");
   const [selectedCategoryId, setSelectedCategoryId] = useState<
     string | undefined
   >();
   const [sortSelected, setSortSelected] = useState<Array<string>>([
-    SORT_OPTIONS[0].value,
+    sortKeyOptions.length > 0 ? `${sortKeyOptions[0]} asc` : "Name asc",
   ]);
   const { mode, setMode } = useSetIndexFiltersMode();
 
@@ -92,15 +97,47 @@ const ProductsTableFilters: React.FC<{
     },
   ];
 
+  const handleSortChange = useCallback(
+    (value: string[]) => {
+      const firstSortOption = value[0];
+      setSortSelected([firstSortOption]);
+
+      const [...sortKeyProps] = firstSortOption.split(" ");
+      const sortDirection = sortKeyProps[sortKeyProps.length - 1];
+      sortKeyProps.pop();
+      const sortKey = sortKeyProps.join(" ")
+
+      onSortChange(sortKey, sortDirection === "asc");
+    },
+    [setSortSelected, onSortChange],
+  );
+
+  const sortOptions = useMemo((): IndexFiltersProps["sortOptions"] => {
+    const options: IndexFiltersProps["sortOptions"] = [];
+    for (const option of sortKeyOptions) {
+      options.push({
+        label: option,
+        value: `${option} asc`,
+        directionLabel: "Ascending",
+      });
+      options.push({
+        label: option,
+        value: `${option} desc`,
+        directionLabel: "Descending",
+      });
+    }
+    return options;
+  }, [sortKeyOptions]);
+
   return (
     <IndexFilters
-      sortOptions={SORT_OPTIONS}
+      sortOptions={sortOptions}
       sortSelected={sortSelected}
       queryValue={queryValue}
       queryPlaceholder="Searching in all"
       onQueryChange={handleFiltersQueryChange}
       onQueryClear={() => setQueryValue("")}
-      onSort={setSortSelected}
+      onSort={handleSortChange}
       tabs={[]}
       selected={selected}
       onSelect={setSelected}
