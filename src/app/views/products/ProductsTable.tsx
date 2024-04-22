@@ -6,7 +6,7 @@ import {
   useIndexResourceState,
   useBreakpoints,
 } from "@shopify/polaris";
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { type IndexTableHeading } from "@shopify/polaris/build/ts/src/components/IndexTable";
 import { type NonEmptyArray } from "@shopify/polaris/build/ts/src/types";
 import {
@@ -46,6 +46,8 @@ const SORT_OPTIONS: Record<string, SortFunction<Product>> = {
   },
 };
 
+const PRODUCTS_PER_PAGE = 10;
+
 export default function ProductsTable() {
   const [fetchingProducts, setFetchingProducts] = useState<boolean>(true);
   const [products, setProducts] = useState<Product[]>([]);
@@ -55,6 +57,10 @@ export default function ProductsTable() {
     categoryId: null,
     productName: null,
   });
+  const [page, setPage] = useState<number>(1);
+  const [pagesCount, setPagesCount] = useState<number>(0);
+  const [productsPerPage, setProductsPerPage] =
+    useState<number>(PRODUCTS_PER_PAGE);
   const {
     selectedResources,
     allResourcesSelected,
@@ -71,6 +77,7 @@ export default function ProductsTable() {
       const products: Product[] = result!;
       setProducts(products);
       setFilteredProducts(products);
+      setPagesCount(Math.ceil(products.length / productsPerPage));
     } else {
       // TODO - show error
     }
@@ -197,6 +204,18 @@ export default function ProductsTable() {
     [filteredProducts, setFilteredProducts],
   );
 
+  useEffect(() => {
+    setPage(1);
+    setPagesCount(Math.ceil(filteredProducts.length / productsPerPage));
+  }, [filteredProducts]);
+
+  const currentPageItems = useMemo(() => {
+    return filteredProducts.slice(
+      (page - 1) * productsPerPage,
+      page * productsPerPage,
+    );
+  }, [filteredProducts, page, productsPerPage]);
+
   return (
     <Card padding="0">
       <ProductsTableFilters
@@ -217,7 +236,7 @@ export default function ProductsTable() {
         headings={TABLE_HEADINGS}
         loading={fetchingProducts}
       >
-        {filteredProducts.map((product, index) => (
+        {currentPageItems.map((product, index) => (
           <ProductsTableRow
             key={product.id}
             product={product}
@@ -230,6 +249,14 @@ export default function ProductsTable() {
         ))}
       </IndexTable>
       <ProductsTableFooter
+        pagination={{
+          page,
+          hasPrevious: page > 1,
+          hasNext: page < pagesCount,
+          onPrevious: () => page > 1 && setPage(page - 1),
+          onNext: () => page < pagesCount && setPage(page + 1),
+        }}
+        paginationHidden={selectedResources.length !== 0 || pagesCount < 2}
         actionsHidden={selectedResources.length === 0}
         onPercentApplyClick={(percent) =>
           handleProductsCommissionPercentChange(
