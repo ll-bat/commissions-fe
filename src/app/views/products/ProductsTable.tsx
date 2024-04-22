@@ -9,7 +9,7 @@ import {
 import React, { useState, useCallback, useEffect } from "react";
 import { type IndexTableHeading } from "@shopify/polaris/build/ts/src/components/IndexTable";
 import { type NonEmptyArray } from "@shopify/polaris/build/ts/src/types";
-import { type Product } from "@/app/views/products/types";
+import { type Product, type ProductCategory } from "@/app/views/products/types";
 import { type Result } from "@/app/types/requestTypes";
 import { type UnknownObject } from "@/app/types/generalTypes";
 import ProductsTableRow from "@/app/views/products/ProductsTableRow";
@@ -17,8 +17,12 @@ import { returnSame } from "@/app/utils";
 import ProductsService from "@/app/views/products/ProductsService";
 import ProductsTableFilters from "@/app/views/products/ProductsTableFilters";
 import { useProductCommissions } from "@/app/hooks/useProductCommissions";
-import type { BulkActionsProps } from "@shopify/polaris/build/ts/src/components/BulkActions";
 import ProductsTableFooter from "@/app/views/products/ProductsTableActionsRow";
+
+type ProductFilter = {
+  categoryId: string | null;
+  productName: string | null;
+};
 
 const TABLE_HEADINGS: NonEmptyArray<IndexTableHeading> = [
   { title: "Name" },
@@ -30,6 +34,12 @@ const TABLE_HEADINGS: NonEmptyArray<IndexTableHeading> = [
 export default function ProductsTable() {
   const [fetchingProducts, setFetchingProducts] = useState<boolean>(true);
   const [products, setProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<ProductCategory[]>([]);
+  const [filter, setFilter] = useState<ProductFilter>({
+    categoryId: null,
+    productName: null,
+  });
   const {
     selectedResources,
     allResourcesSelected,
@@ -45,15 +55,27 @@ export default function ProductsTable() {
     if (ok) {
       const products: Product[] = result!;
       setProducts(products);
+      setFilteredProducts(products);
     } else {
       // TODO - show error
     }
     setFetchingProducts(false);
   }, []);
 
+  const getCategories = useCallback(async () => {
+    const { ok, result } = await ProductsService.getCategories();
+    if (ok) {
+      setCategories(result!);
+    } else {
+      // TODO - show error
+    }
+  }, []);
+
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     getProducts();
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    getCategories();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -68,10 +90,39 @@ export default function ProductsTable() {
     updateProductCommissions(productCommissions);
   }, [products, updateProductCommissions]);
 
+  const filterProductsByCategory = useCallback(
+    (products: Product[], categoryId: string | null) =>
+      products.filter(
+        (product) => product.category.id === categoryId || categoryId == null,
+      ),
+    [],
+  );
+
+  const filterProductsByName = useCallback(
+    (products: Product[], productName: string | null) =>
+      productName
+        ? products.filter((product) => product.name.includes(productName))
+        : products,
+    [],
+  );
+
+  useEffect(() => {
+    let filteredProducts = filterProductsByCategory(
+      products,
+      filter.categoryId,
+    );
+    filteredProducts = filterProductsByName(
+      filteredProducts,
+      filter.productName,
+    );
+    setFilteredProducts(filteredProducts);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filter, filterProductsByCategory, filterProductsByName]);
+
   const handleProductsCommissionPercentChange = (
     percent: number | null,
     productIds: Array<string>,
-    applyToAllProducts: boolean = false,
+    applyToAllProducts = false,
   ) => {
     setProducts((prev: Product[]): Product[] =>
       prev.map((product): Product => {
@@ -93,12 +144,35 @@ export default function ProductsTable() {
     clearSelection();
   };
 
+  const handleCategoryFilterChange = useCallback(
+    (categoryId: string) => {
+      setFilter((prev) => ({ ...prev, categoryId }));
+    },
+    [setFilter],
+  );
+
+  const handleFilterProductNameChange = useCallback(
+    (productName: string) => {
+      setFilter((prev) => ({ ...prev, productName }));
+    },
+    [setFilter],
+  );
+
+  const handleFilterClear = useCallback(() => {
+    setFilter((prev) => ({ ...prev, categoryId: null, productName: null }));
+  }, []);
+
   return (
     <Card padding="0">
-      <ProductsTableFilters />
+      <ProductsTableFilters
+        categories={categories}
+        onCategoryChange={handleCategoryFilterChange}
+        onQueryChange={handleFilterProductNameChange}
+        onFilterClear={handleFilterClear}
+      />
       <IndexTable
         condensed={useBreakpoints().smDown}
-        itemCount={products.length}
+        itemCount={filteredProducts.length}
         selectedItemsCount={
           allResourcesSelected ? "All" : selectedResources.length
         }
@@ -106,7 +180,7 @@ export default function ProductsTable() {
         headings={TABLE_HEADINGS}
         loading={fetchingProducts}
       >
-        {products.map((product, index) => (
+        {filteredProducts.map((product, index) => (
           <ProductsTableRow
             key={product.id}
             product={product}

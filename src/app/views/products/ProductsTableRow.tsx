@@ -41,7 +41,7 @@ const ProductsTableRow: React.FC<{
           </p>
         </div>
       </IndexTable.Cell>
-      <IndexTable.Cell>{category}</IndexTable.Cell>
+      <IndexTable.Cell>{category.name}</IndexTable.Cell>
       <IndexTable.Cell>${price}</IndexTable.Cell>
       <IndexTable.Cell>
         <EnterKeyListenerDiv
