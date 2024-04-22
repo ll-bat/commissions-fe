@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Button, IndexTable, TextField } from "@shopify/polaris";
+import { Button, TextField } from "@shopify/polaris";
 import { type UnknownFunction } from "@/app/types/generalTypes";
 import { normalizePercent } from "@/app/views/products/utils";
 import EnterKeyListenerDiv from "@/app/components/EnterKeyListenerDiv";
 
 const ProductsTableFooter: React.FC<{
   hidden: boolean;
-  onApplyClick: (percent: number | null) => unknown;
+  onPercentApplyClick: (percent: number | null) => unknown;
   onRemoveFromPlanClick: UnknownFunction;
-}> = ({ hidden, onApplyClick, onRemoveFromPlanClick }) => {
+}> = ({ hidden, onPercentApplyClick, onRemoveFromPlanClick }) => {
   const [percent, setPercent] = useState<number | null>(null);
   const handlePercentChange = useCallback((value: string) => {
     setPercent(normalizePercent(value));
@@ -22,7 +22,7 @@ const ProductsTableFooter: React.FC<{
   }, [hidden]);
 
   const handleApplyClick = () => {
-    onApplyClick(percent);
+    onPercentApplyClick(percent);
   };
 
   return (

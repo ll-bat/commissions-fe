@@ -231,7 +231,7 @@ export default function ProductsTable() {
       </IndexTable>
       <ProductsTableFooter
         hidden={selectedResources.length === 0}
-        onApplyClick={(percent) =>
+        onPercentApplyClick={(percent) =>
           handleProductsCommissionPercentChange(
             percent,
             selectedResources,
