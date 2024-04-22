@@ -21,7 +21,7 @@ import { returnSame } from "@/app/utils";
 import ProductsService from "@/app/views/products/ProductsService";
 import ProductsTableFilters from "@/app/views/products/ProductsTableFilters";
 import { useProductCommissions } from "@/app/hooks/useProductCommissions";
-import ProductsTableFooter from "@/app/views/products/ProductsTableActionsRow";
+import ProductsTableFooter from "@/app/views/products/ProductsTableFooter";
 
 type ProductFilter = {
   categoryId: string | null;
