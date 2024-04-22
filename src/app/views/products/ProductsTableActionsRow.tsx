@@ -5,21 +5,21 @@ import { normalizePercent } from "@/app/views/products/utils";
 import EnterKeyListenerDiv from "@/app/components/EnterKeyListenerDiv";
 
 const ProductsTableFooter: React.FC<{
-  hidden: boolean;
+  actionsHidden: boolean;
   onPercentApplyClick: (percent: number | null) => unknown;
   onRemoveFromPlanClick: UnknownFunction;
-}> = ({ hidden, onPercentApplyClick, onRemoveFromPlanClick }) => {
+}> = ({ actionsHidden, onPercentApplyClick, onRemoveFromPlanClick }) => {
   const [percent, setPercent] = useState<number | null>(null);
   const handlePercentChange = useCallback((value: string) => {
     setPercent(normalizePercent(value));
   }, []);
 
   useEffect(() => {
-    if (hidden) {
+    if (actionsHidden) {
       // TODO - maybe it's better to convert `visibility` to re-rendering ?
       setPercent(null);
     }
-  }, [hidden]);
+  }, [actionsHidden]);
 
   const handleApplyClick = () => {
     onPercentApplyClick(percent);
@@ -27,7 +27,7 @@ const ProductsTableFooter: React.FC<{
 
   return (
     <div style={{ padding: ".5rem 3rem", borderTop: "1px solid lightgrey" }}>
-      <div style={{ display: "flex", visibility: hidden ? 'hidden' : 'visible' }}>
+      <div style={{ display: "flex", visibility: actionsHidden ? 'hidden' : 'visible' }}>
         <EnterKeyListenerDiv onEnterClick={handleApplyClick}>
           <TextField
             label={null}
