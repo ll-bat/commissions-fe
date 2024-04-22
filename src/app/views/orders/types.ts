@@ -19,3 +19,13 @@ export interface OrdersSummaryByDay {
   ordersCount: number;
   totalSumCommission: number;
 }
+
+export interface StaffMember {
+  id: string;
+  fullName: string;
+}
+
+export interface DateRange {
+  startDate: Date;
+  endDate: Date;
+}

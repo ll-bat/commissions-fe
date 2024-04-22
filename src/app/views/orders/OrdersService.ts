@@ -1,5 +1,5 @@
 import { type Result } from "@/app/types/requestTypes";
-import { type Order } from "@/app/views/orders/types";
+import { DateRange, type Order, StaffMember } from "@/app/views/orders/types";
 
 const STATIC_ORDERS_DATA: Order[] = [
   {
@@ -59,11 +59,32 @@ const STATIC_ORDERS_DATA: Order[] = [
   },
 ];
 
+const STATIC_STAFF_MEMBERS: StaffMember[] = [
+  {
+    id: "#st-1",
+    fullName: "John Doe",
+  },
+  {
+    id: "#st-21",
+    fullName: "GG LL",
+  },
+];
+
 const ordersService = {
-  async getOrders(): Promise<Result<Order[]>> {
+  async getOrders(
+    dateRange: DateRange,
+    staffMemberId: string,
+  ): Promise<Result<Order[]>> {
     return Promise.resolve({
       ok: true,
       result: STATIC_ORDERS_DATA,
+      errors: null,
+    });
+  },
+  async getStaffMembers(): Promise<Result<StaffMember[]>> {
+    return Promise.resolve({
+      ok: true,
+      result: STATIC_STAFF_MEMBERS,
       errors: null,
     });
   },

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   Card,
   IndexTable,
@@ -7,6 +7,7 @@ import {
 } from "@shopify/polaris";
 import OrdersSummariesTableFilters from "@/app/views/orders/OrdersSummariesTableFilters";
 import {
+  DateRange,
   type OrdersSummaryByDay,
   type OrderWithCommissionSum,
 } from "@/app/views/orders/types";
@@ -29,7 +30,10 @@ const TABLE_HEADINGS: NonEmptyArray<IndexTableHeading> = [
   { title: "Sum commissions" },
 ];
 
-export default function OrdersSummariesTable() {
+const OrdersSummariesTable: FC<{
+  dateRange: DateRange;
+  staffMemberId: string;
+}> = ({ dateRange, staffMemberId }) => {
   const [fetchingOrders, setFetchingOrders] = useState<boolean>(false);
   const [ordersWithCommissions, setOrdersWithCommissions] = useState<
     OrderWithCommissionSum[]
@@ -44,7 +48,7 @@ export default function OrdersSummariesTable() {
   useEffect(() => {
     async function fetchData() {
       setFetchingOrders(true);
-      const { ok, result: orders } = await OrdersService.getOrders();
+      const { ok, result: orders } = await OrdersService.getOrders(dateRange, staffMemberId);
       setFetchingOrders(false);
       if (ok) {
         const ordersWithSumCommissions = calculateOrdersCommissions(
@@ -103,4 +107,6 @@ export default function OrdersSummariesTable() {
       </IndexTable>
     </Card>
   );
-}
+};
+
+export default OrdersSummariesTable;
