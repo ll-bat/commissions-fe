@@ -65,7 +65,7 @@ const ProductsTableFilters: React.FC<{
   if (selectedCategoryId !== undefined) {
     const key = CATEGORY_FILTER_KEY;
     const categoryObject = categories.find(
-      (category) => category.id === selectedCategoryId,
+      (category) => String(category.id) === selectedCategoryId,
     );
     appliedFilters.push({
       key,
@@ -76,7 +76,7 @@ const ProductsTableFilters: React.FC<{
 
   const filterCategories = useMemo(() => {
     return categories.map((category) => ({
-      value: category.id,
+      value: String(category.id),
       label: category.name,
     }));
   }, [categories]);

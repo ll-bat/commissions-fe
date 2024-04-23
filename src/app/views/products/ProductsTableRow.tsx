@@ -25,7 +25,7 @@ const ProductsTableRow: React.FC<{
 
   const { id, name, category, price } = product;
   return (
-    <IndexTable.Row id={id} selected={isSelected} position={index}>
+    <IndexTable.Row id={String(id)} selected={isSelected} position={index}>
       <IndexTable.Cell>
         <div style={{ display: "flex" }}>
           <Image alt="man" source="images/man.png" width="40" />

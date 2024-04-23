@@ -1,5 +1,5 @@
 export interface Product {
-  id: string;
+  id: number;
   name: string;
   category: ProductCategory;
   price: number;
@@ -9,7 +9,7 @@ export interface Product {
 export type ProductCommissionsType = Record<string, number | null>;
 
 export interface ProductCategory {
-  id: string;
+  id: number;
   name: string;
 }
 

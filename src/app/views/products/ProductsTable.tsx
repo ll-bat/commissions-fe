@@ -59,7 +59,7 @@ export default function ProductsTable() {
   });
   const [page, setPage] = useState<number>(1);
   const [pagesCount, setPagesCount] = useState<number>(0);
-  const [productsPerPage, setProductsPerPage] =
+  const [productsPerPage] =
     useState<number>(PRODUCTS_PER_PAGE);
   const {
     selectedResources,
@@ -82,7 +82,7 @@ export default function ProductsTable() {
       // TODO - show error
     }
     setFetchingProducts(false);
-  }, []);
+  }, [productsPerPage]);
 
   const getCategories = useCallback(async () => {
     const { ok, result } = await ProductsService.getCategories();
@@ -115,7 +115,7 @@ export default function ProductsTable() {
   const filterProductsByCategory = useCallback(
     (products: Product[], categoryId: string | null) =>
       products.filter(
-        (product) => product.category.id === categoryId || categoryId == null,
+        (product) => String(product.category.id) === categoryId || categoryId == null,
       ),
     [],
   );
@@ -241,9 +241,9 @@ export default function ProductsTable() {
             key={product.id}
             product={product}
             index={index}
-            isSelected={selectedResources.includes(product.id)}
+            isSelected={selectedResources.includes(String(product.id))}
             onPercentChange={(percent) =>
-              handleProductsCommissionPercentChange(percent, [product.id])
+              handleProductsCommissionPercentChange(percent, [String(product.id)])
             }
           />
         ))}
