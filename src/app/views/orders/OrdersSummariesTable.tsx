@@ -45,7 +45,6 @@ const OrdersSummariesTable: FC<{
   >([]);
   const [page, setPage] = useState<number>(1);
   const [pagesCount, setPagesCount] = useState<number>(0);
-  const [itemsPerPage] = useState<number>(ITEMS_PER_PAGE);
   const { selectedResources, allResourcesSelected, handleSelectionChange } =
     useIndexResourceState(returnSame<UnknownObject[]>(ordersWithCommissions));
 
@@ -89,15 +88,15 @@ const OrdersSummariesTable: FC<{
       (a, b) => a.date.getTime() - b.date.getTime(),
     );
     setOrdersSummariesByDay(sortedOrdersSummariesByDay);
-    setPagesCount(Math.ceil(ordersSummariesByDay.length / itemsPerPage));
+    setPagesCount(Math.ceil(ordersSummariesByDay.length / ITEMS_PER_PAGE));
   }, [ordersWithCommissions]);
 
   const currentPageItems = useMemo(() => {
     return ordersSummariesByDay.slice(
-      (page - 1) * itemsPerPage,
-      page * itemsPerPage,
+      (page - 1) * ITEMS_PER_PAGE,
+      page * ITEMS_PER_PAGE,
     );
-  }, [ordersSummariesByDay, page, itemsPerPage]);
+  }, [ordersSummariesByDay, page, ITEMS_PER_PAGE]);
 
   return (
     <Card padding="0">

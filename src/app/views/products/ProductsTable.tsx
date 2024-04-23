@@ -59,8 +59,6 @@ export default function ProductsTable() {
   });
   const [page, setPage] = useState<number>(1);
   const [pagesCount, setPagesCount] = useState<number>(0);
-  const [productsPerPage] =
-    useState<number>(PRODUCTS_PER_PAGE);
   const {
     selectedResources,
     allResourcesSelected,
@@ -77,12 +75,12 @@ export default function ProductsTable() {
       const products: Product[] = result!;
       setProducts(products);
       setFilteredProducts(products);
-      setPagesCount(Math.ceil(products.length / productsPerPage));
+      setPagesCount(Math.ceil(products.length / PRODUCTS_PER_PAGE));
     } else {
       // TODO - show error
     }
     setFetchingProducts(false);
-  }, [productsPerPage]);
+  }, [PRODUCTS_PER_PAGE]);
 
   const getCategories = useCallback(async () => {
     const { ok, result } = await ProductsService.getCategories();
@@ -115,7 +113,8 @@ export default function ProductsTable() {
   const filterProductsByCategory = useCallback(
     (products: Product[], categoryId: string | null) =>
       products.filter(
-        (product) => String(product.category.id) === categoryId || categoryId == null,
+        (product) =>
+          String(product.category.id) === categoryId || categoryId == null,
       ),
     [],
   );
@@ -206,15 +205,15 @@ export default function ProductsTable() {
 
   useEffect(() => {
     setPage(1);
-    setPagesCount(Math.ceil(filteredProducts.length / productsPerPage));
+    setPagesCount(Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE));
   }, [filteredProducts]);
 
   const currentPageItems = useMemo(() => {
     return filteredProducts.slice(
-      (page - 1) * productsPerPage,
-      page * productsPerPage,
+      (page - 1) * PRODUCTS_PER_PAGE,
+      page * PRODUCTS_PER_PAGE,
     );
-  }, [filteredProducts, page, productsPerPage]);
+  }, [filteredProducts, page, PRODUCTS_PER_PAGE]);
 
   return (
     <Card padding="0">
@@ -243,7 +242,9 @@ export default function ProductsTable() {
             index={index}
             isSelected={selectedResources.includes(String(product.id))}
             onPercentChange={(percent) =>
-              handleProductsCommissionPercentChange(percent, [String(product.id)])
+              handleProductsCommissionPercentChange(percent, [
+                String(product.id),
+              ])
             }
           />
         ))}
