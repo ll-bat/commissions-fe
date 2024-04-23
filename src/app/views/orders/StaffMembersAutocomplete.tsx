@@ -18,7 +18,7 @@ const StaffMembersAutocomplete: FC<{
   useEffect(() => {
     OrdersService.getStaffMembers().then(({ ok, result, errors }) => {
       const staffMembersOptions = result!.map((staffMember) => ({
-        value: staffMember.id,
+        value: String(staffMember.id),
         label: staffMember.fullName,
       }));
       setOptions(staffMembersOptions);

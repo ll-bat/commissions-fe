@@ -1,13 +1,13 @@
 export interface OrderProduct {
-  id: string;
+  id: number;
   price: number;
 }
 
 export interface Order {
-  id: string;
+  id: number;
   products: OrderProduct[];
   staffMember: StaffMember;
-  date: Date;
+  date: string;
 }
 
 export interface OrderWithCommissionSum extends Order {
@@ -21,7 +21,7 @@ export interface OrdersSummaryByDay {
 }
 
 export interface StaffMember {
-  id: string;
+  id: number;
   fullName: string;
 }
 

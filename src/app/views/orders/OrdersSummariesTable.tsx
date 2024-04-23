@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import {
   Card,
   IndexTable,
@@ -30,6 +30,8 @@ const TABLE_HEADINGS: NonEmptyArray<IndexTableHeading> = [
   { title: "Sum commissions" },
 ];
 
+const ITEMS_PER_PAGE = 10;
+
 const OrdersSummariesTable: FC<{
   dateRange: DateRange;
   staffMemberId: string;
@@ -41,14 +43,21 @@ const OrdersSummariesTable: FC<{
   const [ordersSummariesByDay, setOrdersSummariesByDay] = useState<
     OrdersSummaryByDay[]
   >([]);
+  const [page, setPage] = useState<number>(1);
+  const [pagesCount, setPagesCount] = useState<number>(0);
+  const [itemsPerPage] = useState<number>(ITEMS_PER_PAGE);
   const { selectedResources, allResourcesSelected, handleSelectionChange } =
     useIndexResourceState(returnSame<UnknownObject[]>(ordersWithCommissions));
+
   const { productCommissions } = useProductCommissions();
 
   useEffect(() => {
     async function fetchData() {
       setFetchingOrders(true);
-      const { ok, result: orders } = await OrdersService.getOrders(dateRange, staffMemberId);
+      const { ok, result: orders } = await OrdersService.getOrders(
+        dateRange,
+        staffMemberId,
+      );
       setFetchingOrders(false);
       if (ok) {
         const ordersWithSumCommissions = calculateOrdersCommissions(
@@ -80,7 +89,15 @@ const OrdersSummariesTable: FC<{
       (a, b) => a.date.getTime() - b.date.getTime(),
     );
     setOrdersSummariesByDay(sortedOrdersSummariesByDay);
+    setPagesCount(Math.ceil(ordersSummariesByDay.length / itemsPerPage));
   }, [ordersWithCommissions]);
+
+  const currentPageItems = useMemo(() => {
+    return ordersSummariesByDay.slice(
+      (page - 1) * itemsPerPage,
+      page * itemsPerPage,
+    );
+  }, [ordersSummariesByDay, page, itemsPerPage]);
 
   return (
     <Card padding="0">
@@ -96,10 +113,17 @@ const OrdersSummariesTable: FC<{
         onSelectionChange={handleSelectionChange}
         headings={TABLE_HEADINGS}
         loading={fetchingOrders}
+        pagination={{
+          hasNext: page < pagesCount,
+          hasPrevious: page > 1,
+          label: page,
+          onPrevious: () => page > 1 && setPage(page - 1),
+          onNext: () => page < pagesCount && setPage(page + 1),
+        }}
       >
-        {ordersSummariesByDay.map((ordersSummary, index) => (
+        {currentPageItems.map((ordersSummary, index) => (
           <OrdersSummariesTableRow
-            key={`${ordersSummary.date.toLocaleDateString()}-${index}`}
+            key={`${ordersSummary.date}-${index}`}
             ordersSummary={ordersSummary}
             index={index}
           />
