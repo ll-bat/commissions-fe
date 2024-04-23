@@ -52,13 +52,13 @@ async function runRequest(
 const axiosClient = {
   get: async (url: string, config?: AxiosRequestConfig) =>
     await runRequest("GET", url, null, config),
-  post: async (url: string, payload: any, config?: AxiosRequestConfig) =>
+  post: async (url: string, payload: unknown, config?: AxiosRequestConfig) =>
     await runRequest("POST", url, payload, config),
-  put: async (url: string, payload: any, config?: AxiosRequestConfig) =>
+  put: async (url: string, payload: unknown, config?: AxiosRequestConfig) =>
     await runRequest("PUT", url, payload, config),
   delete: async (url: string, config?: AxiosRequestConfig) =>
     await runRequest("DELETE", url, null, config),
-  patch: async (url: string, payload: any, config?: AxiosRequestConfig) =>
+  patch: async (url: string, payload: unknown, config?: AxiosRequestConfig) =>
     await runRequest("PATCH", url, payload, config),
 };
 
