@@ -7,12 +7,12 @@ const globalConfig: AxiosRequestConfig = {
 
 const client: AxiosInstance = axios.create(globalConfig);
 
-async function runRequest(
+async function runRequest<T>(
   method: string,
   url: string,
   payload: unknown,
   config?: AxiosRequestConfig,
-): Promise<Result<unknown>> {
+): Promise<Result<T>> {
   if (["POST", "PUT"].includes(method)) {
     // in this case, the arguments go like this: url, data, config
     config = config ?? {};
@@ -34,7 +34,7 @@ async function runRequest(
     });
     return {
       ok: true,
-      result: response.data,
+      result: response.data as T,
       errors: null,
     };
   } catch (errorResponse) {
@@ -50,16 +50,19 @@ async function runRequest(
 }
 
 const axiosClient = {
-  get: async (url: string, config?: AxiosRequestConfig) =>
-    await runRequest("GET", url, null, config),
-  post: async (url: string, payload: unknown, config?: AxiosRequestConfig) =>
-    await runRequest("POST", url, payload, config),
-  put: async (url: string, payload: unknown, config?: AxiosRequestConfig) =>
-    await runRequest("PUT", url, payload, config),
-  delete: async (url: string, config?: AxiosRequestConfig) =>
-    await runRequest("DELETE", url, null, config),
-  patch: async (url: string, payload: unknown, config?: AxiosRequestConfig) =>
-    await runRequest("PATCH", url, payload, config),
+  get: async <T>(url: string, config?: AxiosRequestConfig) =>
+    await runRequest<T>("GET", url, null, config),
+  post: async <T>(url: string, payload: unknown, config?: AxiosRequestConfig) =>
+    await runRequest<T>("POST", url, payload, config),
+  put: async <T>(url: string, payload: unknown, config?: AxiosRequestConfig) =>
+    await runRequest<T>("PUT", url, payload, config),
+  delete: async <T>(url: string, config?: AxiosRequestConfig) =>
+    await runRequest<T>("DELETE", url, null, config),
+  patch: async <T>(
+    url: string,
+    payload: unknown,
+    config?: AxiosRequestConfig,
+  ) => await runRequest<T>("PATCH", url, payload, config),
 };
 
 export default axiosClient;
