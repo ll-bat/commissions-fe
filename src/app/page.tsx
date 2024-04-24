@@ -8,7 +8,6 @@ import { useCallback, useState } from "react";
 import OrdersSummariesTable from "@/app/views/orders/OrdersSummariesTable";
 
 export default function Home() {
-  // TODO - maybe to  use `Grid` ?
   const [uniqueKey, setUniqueKey] = useState<number>(1);
   const [dateRange, setDateRange] = useState<{
     startDate: Date | null;
