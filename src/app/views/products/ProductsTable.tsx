@@ -284,14 +284,6 @@ export default function ProductsTable() {
         ))}
       </IndexTable>
       <ProductsTableFooter
-        pagination={{
-          page,
-          pagesCount: pagesCount,
-          hasPrevious: page > 1,
-          hasNext: page < pagesCount,
-          onPrevious: () => page > 1 && setPage(page - 1),
-          onNext: () => page < pagesCount && setPage(page + 1),
-        }}
         paginationHidden={selectedResources.length !== 0 || pagesCount < 2}
         actionsHidden={selectedResources.length === 0}
         onPercentApplyClick={(percent) =>
@@ -302,6 +294,14 @@ export default function ProductsTable() {
           )
         }
         onRemoveFromPlanClick={handleRemoveFromPlan}
+        pagination={{
+          page,
+          pagesCount: pagesCount,
+          hasPrevious: page > 1,
+          hasNext: page < pagesCount,
+          onPrevious: () => page > 1 && setPage(page - 1),
+          onNext: () => page < pagesCount && setPage(page + 1),
+        }}
       />
     </Card>
   );
