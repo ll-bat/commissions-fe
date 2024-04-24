@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Page } from "@shopify/polaris";
+import { Button, Grid, Page } from "@shopify/polaris";
 import ProductsTable from "@/app/views/products/ProductsTable";
 import DateRangePicker from "@/app/views/orders/DateRangePicker";
 import StaffMembersAutocomplete from "@/app/views/orders/StaffMembersAutocomplete";
@@ -41,80 +41,76 @@ export default function Home() {
 
   return (
     <Page fullWidth>
-      <div
-        style={{
-          marginTop: "5rem",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <div style={{ width: "100%", maxWidth: "800px" }}>
+      <Grid>
+        <Grid.Cell
+          column={{ xl: "4", lg: "3" }}
+          columnSpan={{ xs: 6, lg: 8, xl: 6 }}
+        >
           <ProductsTable />
-        </div>
-      </div>
+        </Grid.Cell>
+      </Grid>
 
-      <div
-        style={{
-          marginTop: "5rem",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <div style={{ width: "100%", maxWidth: "400px" }}>
-          <DateRangePicker
-            year={2024}
-            month={3}
-            onSelect={handleSelectDateRange}
-          />
-        </div>
-
-        <div
-          style={{ width: "100%", maxWidth: "400px", padding: "0 0 0 2rem" }}
+      <Grid>
+        <Grid.Cell
+          column={{ xl: "4", lg: "3" }}
+          columnSpan={{ xs: 6, lg: 8, xl: 6 }}
         >
-          <StaffMembersAutocomplete onSelect={handleSelectStaffMember} />
-        </div>
+          <div style={{ display: "flex" }}>
+            <div style={{ width: "50%", margin: "2rem 1rem 1rem 0" }}>
+              <DateRangePicker
+                year={2024}
+                month={3}
+                onSelect={handleSelectDateRange}
+              />
+            </div>
+            <div style={{ width: "50%", margin: "2rem 0 1rem 1rem" }}>
+              <StaffMembersAutocomplete onSelect={handleSelectStaffMember} />
+            </div>
+          </div>
+        </Grid.Cell>
+      </Grid>
+
+      <div style={{ marginTop: "1rem" }}>
+        <Grid>
+          <Grid.Cell
+            column={{ xl: "4", lg: "3" }}
+            columnSpan={{ xs: 6, lg: 8, xl: 6 }}
+          >
+            <Button
+              variant="primary"
+              size="large"
+              disabled={
+                staffMemberId === null ||
+                dateRange.startDate === null ||
+                dateRange.endDate === null
+              }
+              onClick={handleSimulateClick}
+              fullWidth
+            >
+              Simulate
+            </Button>
+          </Grid.Cell>
+        </Grid>
       </div>
 
-      <div
-        style={{
-          marginTop: "5rem",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <Button
-          variant="primary"
-          size="large"
-          disabled={
-            staffMemberId === null ||
-            dateRange.startDate === null ||
-            dateRange.endDate === null
-          }
-          onClick={handleSimulateClick}
-        >
-          Simulate
-        </Button>
-      </div>
-
-      <div
-        style={{
-          marginTop: "4rem",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <div style={{ width: "100%", maxWidth: "800px" }}>
-          {showOrdersTable && (
-            <OrdersSummariesTable
-              key={`orders-summary-table-key-${uniqueKey}`}
-              dateRange={{
-                startDate: dateRange.startDate!,
-                endDate: dateRange.endDate!,
-              }}
-              staffMemberId={staffMemberId!}
-            />
-          )}
-        </div>
+      <div style={{ margin: '3rem 0' }}>
+        <Grid>
+          <Grid.Cell
+            column={{ xl: "4", lg: "3" }}
+            columnSpan={{ xs: 6, lg: 8, xl: 6 }}
+          >
+            {showOrdersTable && (
+              <OrdersSummariesTable
+                key={`orders-summary-table-key-${uniqueKey}`}
+                dateRange={{
+                  startDate: dateRange.startDate!,
+                  endDate: dateRange.endDate!,
+                }}
+                staffMemberId={staffMemberId!}
+              />
+            )}
+          </Grid.Cell>
+        </Grid>
       </div>
     </Page>
   );

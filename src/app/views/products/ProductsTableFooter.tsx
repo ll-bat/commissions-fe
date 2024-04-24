@@ -6,8 +6,8 @@ import EnterKeyListenerDiv from "@/app/components/EnterKeyListenerDiv";
 
 const ProductsTableFooter: React.FC<{
   pagination: {
-    page: number,
-    pagesCount: number,
+    page: number;
+    pagesCount: number;
     hasNext: boolean;
     hasPrevious: boolean;
     onNext: UnknownFunction;
@@ -31,7 +31,6 @@ const ProductsTableFooter: React.FC<{
 
   useEffect(() => {
     if (actionsHidden) {
-      // TODO - maybe it's better to convert `visibility` to re-rendering ?
       setPercent(null);
     }
   }, [actionsHidden]);
@@ -41,7 +40,13 @@ const ProductsTableFooter: React.FC<{
   };
 
   return (
-    <div style={{ padding: ".5rem 3rem", borderTop: "1px solid lightgrey", minHeight: '3rem' }}>
+    <div
+      style={{
+        padding: ".5rem 3rem",
+        borderTop: "1px solid lightgrey",
+        minHeight: "3rem",
+      }}
+    >
       <div
         style={{
           display: "flex",
