@@ -5,7 +5,6 @@ import {
   useBreakpoints,
   useIndexResourceState,
 } from "@shopify/polaris";
-import OrdersSummariesTableFilters from "@/app/views/orders/OrdersSummariesTableFilters";
 import {
   type DateRange,
   type OrdersSummaryByDay,
@@ -82,7 +81,6 @@ const OrdersSummariesTable: FC<{
   }, [setOrdersWithCommissions, productCommissions]);
 
   useEffect(() => {
-    // TODO - we might improve this ?
     const ordersSummariesByDay = getOrdersSummariesByDay(ordersWithCommissions);
     const sortedOrdersSummariesByDay = ordersSummariesByDay.sort(
       (a, b) => a.date.getTime() - b.date.getTime(),
@@ -100,8 +98,6 @@ const OrdersSummariesTable: FC<{
 
   return (
     <Card padding="0">
-      <OrdersSummariesTableFilters />
-
       <IndexTable
         selectable={false}
         condensed={useBreakpoints().smDown}
