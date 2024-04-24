@@ -96,7 +96,7 @@ const OrdersSummariesTable: FC<{
       (page - 1) * ITEMS_PER_PAGE,
       page * ITEMS_PER_PAGE,
     );
-  }, [ordersSummariesByDay, page, ITEMS_PER_PAGE]);
+  }, [ordersSummariesByDay, page]);
 
   return (
     <Card padding="0">

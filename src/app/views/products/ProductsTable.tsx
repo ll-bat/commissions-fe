@@ -1,12 +1,13 @@
 "use client";
 
 import {
-  IndexTable,
   Card,
-  useIndexResourceState,
+  IndexTable,
   useBreakpoints,
+  useIndexResourceState,
+  IndexTableSelectionType,
 } from "@shopify/polaris";
-import React, { useState, useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { type IndexTableHeading } from "@shopify/polaris/build/ts/src/components/IndexTable";
 import { type NonEmptyArray } from "@shopify/polaris/build/ts/src/types";
 import {
@@ -22,6 +23,7 @@ import ProductsService from "@/app/views/products/ProductsService";
 import ProductsTableFilters from "@/app/views/products/ProductsTableFilters";
 import { useProductCommissions } from "@/app/hooks/useProductCommissions";
 import ProductsTableFooter from "@/app/views/products/ProductsTableFooter";
+import { type Range } from "@shopify/polaris/build/ts/src/utilities/index-provider/types";
 
 type ProductFilter = {
   categoryId: string | null;
@@ -213,7 +215,35 @@ export default function ProductsTable() {
       (page - 1) * PRODUCTS_PER_PAGE,
       page * PRODUCTS_PER_PAGE,
     );
-  }, [filteredProducts, page, PRODUCTS_PER_PAGE]);
+  }, [filteredProducts, page]);
+
+  const handleSelectProducts = (
+    selectionType: IndexTableSelectionType,
+    toggleType: boolean,
+    selection?: string | Range,
+    position?: number,
+  ) => {
+    if (
+      selectionType === IndexTableSelectionType.Page ||
+      selectionType === IndexTableSelectionType.All
+    ) {
+      /**
+       * When we have applied the filter to the table, after clicking on the select all checkbox
+       * all products are selected (also those that are not visible).
+       * We need to select only the products that are visible on the current page when clicking on the select all checkbox.
+       */
+      for (const item of filteredProducts) {
+        handleSelectionChange(
+          IndexTableSelectionType.Single,
+          toggleType,
+          String(item.id),
+          position,
+        );
+      }
+    } else {
+      handleSelectionChange(selectionType, toggleType, selection, position);
+    }
+  };
 
   return (
     <Card padding="0">
@@ -231,16 +261,20 @@ export default function ProductsTable() {
         selectedItemsCount={
           allResourcesSelected ? "All" : selectedResources.length
         }
-        onSelectionChange={handleSelectionChange}
+        onSelectionChange={handleSelectProducts}
         headings={TABLE_HEADINGS}
         loading={fetchingProducts}
       >
         {currentPageItems.map((product, index) => (
           <ProductsTableRow
-            key={product.id}
+            key={String(product.id)}
             product={product}
             index={index}
-            isSelected={selectedResources.includes(String(product.id))}
+            isSelected={
+              selectedResources.find(
+                (itemId) => String(itemId) === String(product.id),
+              ) !== undefined
+            }
             onPercentChange={(percent) =>
               handleProductsCommissionPercentChange(percent, [
                 String(product.id),
