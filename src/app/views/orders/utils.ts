@@ -1,12 +1,10 @@
 import {
-  OrdersSummaryByDay,
+  type OrdersSummaryByDay,
   type Order,
   type OrderProduct,
   type OrderWithCommissionSum,
 } from "@/app/views/orders/types";
 import { type ProductCommissionsType } from "@/app/views/products/types";
-import ordersSummariesTable from "@/app/views/orders/OrdersSummariesTable";
-import ordersService from "@/app/views/orders/OrdersService";
 
 /**
  * An order can have multiple products. Each product can have a commission percentage.
