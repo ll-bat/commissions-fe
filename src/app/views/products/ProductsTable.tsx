@@ -43,7 +43,7 @@ const SORT_OPTIONS: Record<string, SortFunction<Product>> = {
     return a.category.name.localeCompare(b.category.name);
   },
   Price: (a, b) => a.price - b.price,
-  "Commission Percent": (a, b) => {
+  Percent: (a, b) => {
     return (a.commissionPercent ?? 0) - (b.commissionPercent ?? 0);
   },
 };
