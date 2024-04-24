@@ -1,5 +1,5 @@
-import { FC, useCallback, useState } from "react";
-import { Card, DatePicker, Range } from "@shopify/polaris";
+import { type FC, useCallback, useState } from "react";
+import { Card, DatePicker, type Range } from "@shopify/polaris";
 
 const DateRangePicker: FC<{
   month: number;

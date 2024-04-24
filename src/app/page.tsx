@@ -4,7 +4,7 @@ import { Button, Page } from "@shopify/polaris";
 import ProductsTable from "@/app/views/products/ProductsTable";
 import DateRangePicker from "@/app/views/orders/DateRangePicker";
 import StaffMembersAutocomplete from "@/app/views/orders/StaffMembersAutocomplete";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import OrdersSummariesTable from "@/app/views/orders/OrdersSummariesTable";
 
 export default function Home() {
@@ -27,14 +27,17 @@ export default function Home() {
     });
   };
 
-  const handleSelectStaffMember = (staffMemberId: string) => {
-    setStaffMemberId(staffMemberId);
-  };
+  const handleSelectStaffMember = useCallback(
+    (staffMemberId: string) => {
+      setStaffMemberId(staffMemberId);
+    },
+    [setStaffMemberId],
+  );
 
-  const handleSimulateClick = () => {
+  const handleSimulateClick = useCallback(() => {
     setShowOrdersTable(true);
     setUniqueKey((prev) => prev + 1);
-  };
+  }, [setShowOrdersTable, setUniqueKey]);
 
   return (
     <Page fullWidth>
@@ -58,7 +61,11 @@ export default function Home() {
         }}
       >
         <div style={{ width: "100%", maxWidth: "400px" }}>
-          <DateRangePicker year={2024} month={3} onSelect={handleSelectDateRange} />
+          <DateRangePicker
+            year={2024}
+            month={3}
+            onSelect={handleSelectDateRange}
+          />
         </div>
 
         <div

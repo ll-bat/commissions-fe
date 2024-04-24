@@ -1,7 +1,8 @@
 import { Autocomplete, Icon } from "@shopify/polaris";
 import { SearchIcon } from "@shopify/polaris-icons";
-import { useState, useCallback, useEffect, FC } from "react";
+import { useState, useCallback, useEffect, type FC } from "react";
 import OrdersService from "@/app/views/orders/OrdersService";
+import { getFirstError, showAlert } from "@/app/utils";
 
 const StaffMembersAutocomplete: FC<{
   onSelect: (staffMemberId: string) => void;
@@ -16,13 +17,18 @@ const StaffMembersAutocomplete: FC<{
   >([]);
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     OrdersService.getStaffMembers().then(({ ok, result, errors }) => {
-      const staffMembersOptions = result!.map((staffMember) => ({
-        value: String(staffMember.id),
-        label: staffMember.fullName,
-      }));
-      setOptions(staffMembersOptions);
-      setFilteredOptions(staffMembersOptions);
+      if (ok) {
+        const staffMembersOptions = result!.map((staffMember) => ({
+          value: String(staffMember.id),
+          label: staffMember.fullName,
+        }));
+        setOptions(staffMembersOptions);
+        setFilteredOptions(staffMembersOptions);
+      } else {
+        showAlert(false, getFirstError(errors));
+      }
     });
   }, []);
 
@@ -50,14 +56,14 @@ const StaffMembersAutocomplete: FC<{
         const matchedOption = filteredOptions.find((option) => {
           return option.value.match(selectedItem);
         });
-        return matchedOption && matchedOption.label;
+        return matchedOption?.label;
       });
 
       setSelectedOptions(selected);
-      setInputValue(selectedValue[0] || "");
+      setInputValue(selectedValue[0] ?? "");
       onSelect(selected[0]);
     },
-    [filteredOptions],
+    [filteredOptions, onSelect],
   );
 
   const textField = (

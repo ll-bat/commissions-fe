@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from "react";
+import { type FC, useEffect, useMemo, useState } from "react";
 import {
   Card,
   IndexTable,
@@ -7,7 +7,7 @@ import {
 } from "@shopify/polaris";
 import OrdersSummariesTableFilters from "@/app/views/orders/OrdersSummariesTableFilters";
 import {
-  DateRange,
+  type DateRange,
   type OrdersSummaryByDay,
   type OrderWithCommissionSum,
 } from "@/app/views/orders/types";

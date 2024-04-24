@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes, KeyboardEvent } from "react";
+import { type FC, type HTMLAttributes, type KeyboardEvent } from "react";
 
 interface EnterKeyListenerDivProps extends HTMLAttributes<HTMLDivElement> {
   onEnterClick: (event: KeyboardEvent<HTMLDivElement>) => void;
