@@ -113,16 +113,16 @@ const OrdersSummariesTable: FC<{
         headings={TABLE_HEADINGS}
         loading={fetchingOrders}
         pagination={{
+          label: `${page} / ${pagesCount}`,
           hasNext: page < pagesCount,
           hasPrevious: page > 1,
-          label: page,
           onPrevious: () => page > 1 && setPage(page - 1),
           onNext: () => page < pagesCount && setPage(page + 1),
         }}
       >
         {currentPageItems.map((ordersSummary, index) => (
           <OrdersSummariesTableRow
-            key={`${ordersSummary.date}-${index}`}
+            key={`${ordersSummary.date.toLocaleDateString()}-${index}`}
             ordersSummary={ordersSummary}
             index={index}
           />

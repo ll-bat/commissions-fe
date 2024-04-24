@@ -7,6 +7,7 @@ import EnterKeyListenerDiv from "@/app/components/EnterKeyListenerDiv";
 const ProductsTableFooter: React.FC<{
   pagination: {
     page: number,
+    pagesCount: number,
     hasNext: boolean;
     hasPrevious: boolean;
     onNext: UnknownFunction;
@@ -49,7 +50,7 @@ const ProductsTableFooter: React.FC<{
       >
         {!paginationHidden && (
           <Pagination
-            label={pagination.page}
+            label={`${pagination.page} / ${pagination.pagesCount}`}
             hasPrevious={pagination.hasPrevious}
             onPrevious={pagination.onPrevious}
             hasNext={pagination.hasNext}

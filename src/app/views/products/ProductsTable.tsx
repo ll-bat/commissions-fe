@@ -252,6 +252,7 @@ export default function ProductsTable() {
       <ProductsTableFooter
         pagination={{
           page,
+          pagesCount: pagesCount,
           hasPrevious: page > 1,
           hasNext: page < pagesCount,
           onPrevious: () => page > 1 && setPage(page - 1),
