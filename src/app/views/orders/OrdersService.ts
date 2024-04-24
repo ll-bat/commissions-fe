@@ -1,5 +1,5 @@
 import { type Result } from "@/app/types/requestTypes";
-import { DateRange, type Order, StaffMember } from "@/app/views/orders/types";
+import { type DateRange, type Order, type StaffMember } from "@/app/views/orders/types";
 import axiosClient from "@/app/axios";
 
 const ordersService = {
@@ -9,7 +9,8 @@ const ordersService = {
   ): Promise<Result<Order[]>> {
     return await axiosClient.get<Order[]>("/orders", {
       params: {
-        dateRange,
+        startDate: dateRange.startDate,
+        endDate: dateRange.endDate,
         staffMemberId,
       },
     });
