@@ -242,7 +242,16 @@ export default function ProductsTable() {
        * all products are selected (also those that are not visible).
        * We need to select only the products that are visible on the current page when clicking on the select all checkbox.
        */
+      const selectedProductsMapper: Record<string, boolean> = {};
+      for (const selectedProductId of selectedResources) {
+        selectedProductsMapper[selectedProductId] = true;
+      }
+
       for (const item of filteredProducts) {
+        if (toggleType && selectedProductsMapper[item.id]) {
+          // `IndexTable` doesn't work properly sometimes
+          continue;
+        }
         handleSelectionChange(
           IndexTableSelectionType.Single,
           toggleType,
