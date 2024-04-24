@@ -18,7 +18,7 @@ import {
 import { type Result } from "@/app/types/requestTypes";
 import { type UnknownObject } from "@/app/types/generalTypes";
 import ProductsTableRow from "@/app/views/products/ProductsTableRow";
-import { returnSame } from "@/app/utils";
+import { getFirstError, returnSame, showAlert } from "@/app/utils";
 import ProductsService from "@/app/views/products/ProductsService";
 import ProductsTableFilters from "@/app/views/products/ProductsTableFilters";
 import { useProductCommissions } from "@/app/hooks/useProductCommissions";
@@ -71,7 +71,7 @@ export default function ProductsTable() {
 
   const getProducts = useCallback(async () => {
     setFetchingProducts(true);
-    const { ok, result }: Result<Product[]> =
+    const { ok, result, errors }: Result<Product[]> =
       await ProductsService.getProducts();
     if (ok) {
       const products: Product[] = result!;
@@ -79,17 +79,17 @@ export default function ProductsTable() {
       setFilteredProducts(products);
       setPagesCount(Math.ceil(products.length / PRODUCTS_PER_PAGE));
     } else {
-      // TODO - show error
+      showAlert(false, getFirstError(errors));
     }
     setFetchingProducts(false);
-  }, [PRODUCTS_PER_PAGE]);
+  }, []);
 
   const getCategories = useCallback(async () => {
-    const { ok, result } = await ProductsService.getCategories();
+    const { ok, result, errors } = await ProductsService.getCategories();
     if (ok) {
       setCategories(result!);
     } else {
-      // TODO - show error
+      showAlert(false, getFirstError(errors));
     }
   }, []);
 
