@@ -142,7 +142,7 @@ export default function ProductsTable() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter, filterProductsByCategory, filterProductsByName]);
 
-  const handleProductsCommissionPercentChange = (
+  const handleProductsCommissionPercentChange = async (
     percent: number | null,
     productIds: Array<string>,
     applyToAllProducts = false,
@@ -168,11 +168,21 @@ export default function ProductsTable() {
       });
     setProducts(updateProductsFn);
     setFilteredProducts(updateProductsFn);
+
+    const { ok, errors } =
+      await ProductsService.updateProductsCommissionPercent(
+        toUpdateProductIds,
+        percent,
+      );
+    if (!ok) {
+      showAlert(false, getFirstError(errors));
+    }
+
     clearSelection();
   };
 
-  const handleRemoveFromPlan = () => {
-    handleProductsCommissionPercentChange(null, selectedResources);
+  const handleRemoveFromPlan = async () => {
+    await handleProductsCommissionPercentChange(null, selectedResources);
     clearSelection();
   };
 
