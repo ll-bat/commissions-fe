@@ -1,0 +1,8 @@
+services:
+  commissions_fe:
+    build:
+      context: .
+    image: commissions-fe
+    container_name: commissions-fe
+    ports:
+      - 3000:3000
