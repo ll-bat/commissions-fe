@@ -5,6 +5,8 @@ import {
   type OrderWithCommissionSum,
 } from "@/app/views/orders/types";
 import { type ProductCommissionsType } from "@/app/views/products/types";
+import ordersSummariesTable from "@/app/views/orders/OrdersSummariesTable";
+import ordersService from "@/app/views/orders/OrdersService";
 
 /**
  * An order can have multiple products. Each product can have a commission percentage.
@@ -56,6 +58,12 @@ export function getOrdersSummariesByDay(
     },
     {},
   );
+
+  for (const day in ordersSummaryByDayMap) {
+    const orderSummary: OrdersSummaryByDay = ordersSummaryByDayMap[day];
+    orderSummary.totalSumCommission =
+      Math.round(orderSummary.totalSumCommission * 100) / 100;
+  }
 
   return Object.values(ordersSummaryByDayMap);
 }
