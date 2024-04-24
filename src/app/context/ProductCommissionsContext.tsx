@@ -1,8 +1,6 @@
 import { createContext, type ReactNode, useCallback, useState } from "react";
 import { type ProductCommissionsType } from "@/app/views/products/types";
 
-// TODO - is adding `ProductCommissionsType` to `views/../types` the best place?
-
 type ProductCommissionContextType = {
   productCommissions: ProductCommissionsType;
   updateProductCommissions: (

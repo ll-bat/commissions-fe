@@ -1,4 +1,8 @@
-import axios, { type AxiosInstance, type AxiosRequestConfig } from "axios";
+import axios, {
+  type AxiosError,
+  type AxiosInstance,
+  type AxiosRequestConfig,
+} from "axios";
 import { type Result } from "@/app/types/requestTypes";
 
 const globalConfig: AxiosRequestConfig = {
@@ -37,13 +41,16 @@ async function runRequest<T>(
       result: response.data as T,
       errors: null,
     };
-  } catch (errorResponse) {
+  } catch (errorResponse: unknown) {
+    const axiosError = errorResponse as AxiosError<string, unknown>;
+    const errorData =
+      axiosError.response?.data ?? "Something went wrong. Please, try again";
     return {
       ok: false,
       result: null,
       errors: {
-        // TODO handle other error cases
-        nonFieldErrors: ["Something went wrong. Please, try again"],
+        // handle other error cases
+        nonFieldErrors: [errorData],
       },
     };
   }

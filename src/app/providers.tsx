@@ -1,5 +1,4 @@
 "use client";
-// TODO - do we need `use client` here?
 
 import React from "react";
 import { AppProvider } from "@shopify/polaris";

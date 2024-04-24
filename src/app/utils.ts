@@ -1,7 +1,7 @@
 import { type Errors } from "@/app/types/requestTypes";
 
 export function showAlert(success: boolean, message: string | null) {
-  // TODO - implement better way
+  // implement better way
   if (message) {
     alert(message);
   }
